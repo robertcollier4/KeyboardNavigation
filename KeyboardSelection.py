@@ -31,7 +31,7 @@ class MoveToBegOfContigBoundaryCommand(sublime_plugin.TextCommand):
 class MoveToBegOfSubwordBoundaryCommand(sublime_plugin.TextCommand):
 	def run(self, edit, forward):
 		# chr(34) is doublequote
-		subwordDelims = [chr(34), ".", "+", "_", "<", ">", "[", "]", "{", "}", "-", "(", ")"]
+		subwordDelims = [" ", chr(34), ".", "+", "_", "<", ">", "[", "]", "{", "}", "-", "(", ")", "|", "\\"]
 		view = self.view
 		oldSelRegions = list(view.sel())
 		view.sel().clear()
@@ -39,25 +39,23 @@ class MoveToBegOfSubwordBoundaryCommand(sublime_plugin.TextCommand):
 			if(forward): #forward
 				caretPos = thisregion.b
 				haveMovedAtleastOnce = False
-				if(view.substr(caretPos) not in string.whitespace):
-					while ((view.substr(caretPos) not in string.whitespace) and (view.substr(caretPos) not in subwordDelims) and (caretPos < view.size())):
-						if(not haveMovedAtleastOnce):
-							haveMovedAtleastOnce = True
-						caretPos += 1
+				while ( (view.substr(caretPos) not in subwordDelims) and (caretPos < view.size()) ):
 					if(not haveMovedAtleastOnce):
-						caretPos += 1
+						haveMovedAtleastOnce = True
+					caretPos += 1
+				if(not haveMovedAtleastOnce):
+					caretPos += 1
 				view.sel().add(sublime.Region(caretPos))
 				view.show(caretPos)
 			else: #backward
 				caretPos = thisregion.b - 1
 				haveMovedAtleastOnce = False
-				if(view.substr(caretPos) not in string.whitespace):
-					while ((view.substr(caretPos) not in string.whitespace) and (view.substr(caretPos) not in subwordDelims) and (caretPos >= 0)): #now have char left of me, find whitespace
-						if(not haveMovedAtleastOnce):
-							haveMovedAtleastOnce = True
-						caretPos -= 1
+				while ( (view.substr(caretPos) not in subwordDelims) and (caretPos >= 0) ):
 					if(not haveMovedAtleastOnce):
-						caretPos -= 1
+						haveMovedAtleastOnce = True
+					caretPos -= 1
+				if(not haveMovedAtleastOnce):
+					caretPos -= 1
 				view.sel().add(sublime.Region(caretPos+1))
 				view.show(caretPos+1)
 
@@ -93,11 +91,11 @@ class ExpandSelectionToQuotesCommand(sublime_plugin.TextCommand):
 		for thisregion in oldSelRegions:
 			thisRegionBegin = thisregion.begin() - 1
 			thisRegionEnd = thisregion.end()
-			while ((view.substr(thisRegionBegin) != "\"") and (thisRegionBegin >= 0)):
+			while ((view.substr(thisRegionBegin) not in beginDelims) and (thisRegionBegin >= 0)):
 				thisRegionBegin -= 1
 			thisRegionBegin += 1
 
-			while((view.substr(thisRegionEnd) != "\"") and (thisRegionEnd < view.size())):
+			while((view.substr(thisRegionEnd) not in endDelims) and (thisRegionEnd < view.size())):
 				thisRegionEnd += 1
 
 			view.sel().add(sublime.Region(thisRegionBegin, thisRegionEnd))
@@ -111,11 +109,11 @@ class ExpandSelectionToBracketsCommand(sublime_plugin.TextCommand):
 		for thisregion in oldSelRegions:
 			thisRegionBegin = thisregion.begin() - 1
 			thisRegionEnd = thisregion.end()
-			while ((view.substr(thisRegionBegin) != "\"") and (thisRegionBegin >= 0)):
+			while ((view.substr(thisRegionBegin) not in beginDelims) and (thisRegionBegin >= 0)):
 				thisRegionBegin -= 1
 			thisRegionBegin += 1
 
-			while((view.substr(thisRegionEnd) != "\"") and (thisRegionEnd < view.size())):
+			while((view.substr(thisRegionEnd) not in endDelims) and (thisRegionEnd < view.size())):
 				thisRegionEnd += 1
 
 			view.sel().add(sublime.Region(thisRegionBegin, thisRegionEnd))
@@ -161,28 +159,28 @@ class SelectToNextSubwordBoundaryCommand(sublime_plugin.TextCommand):
 		pass
 		
 # Reference (no longer used)
-class ExpandSelectionToSentenceCommand(sublime_plugin.TextCommand):
-   def run(self, edit):
-	  view = self.view
-	  oldSelRegions = list(view.sel())
-	  view.sel().clear()
-	  for thisregion in oldSelRegions:
-		 thisRegionBegin = thisregion.begin() - 1
-		 while ((view.substr(thisRegionBegin) not in ".") and (thisRegionBegin >= 0)):
-			thisRegionBegin -= 1
+# class ExpandSelectionToSentenceCommand(sublime_plugin.TextCommand):
+# 	def run(self, edit):
+# 		view = self.view
+# 		oldSelRegions = list(view.sel())
+# 		view.sel().clear()
+# 		for thisregion in oldSelRegions:
+# 			thisRegionBegin = thisregion.begin() - 1
+# 			while ((view.substr(thisRegionBegin) not in ".") and (thisRegionBegin >= 0)):
+# 				thisRegionBegin -= 1
 
-		 thisRegionBegin += 1
-		 while((view.substr(thisRegionBegin) in string.whitespace) and (thisRegionBegin < view.size())):
-			thisRegionBegin += 1
+# 			thisRegionBegin += 1
+# 			while((view.substr(thisRegionBegin) in string.whitespace) and (thisRegionBegin < view.size())):
+# 				thisRegionBegin += 1
 
-		 thisRegionEnd = thisregion.end()
-		 while((view.substr(thisRegionEnd) not in ".") and (thisRegionEnd < view.size())):
-			thisRegionEnd += 1
+# 			thisRegionEnd = thisregion.end()
+# 			while((view.substr(thisRegionEnd) not in ".") and (thisRegionEnd < view.size())):
+# 				thisRegionEnd += 1
 
-		 if(thisRegionBegin != thisRegionEnd):
-			view.sel().add(sublime.Region(thisRegionBegin, thisRegionEnd+1))
-		 else:
-			view.sel().add(sublime.Region(thisRegionBegin, thisRegionBegin))
+# 			if(thisRegionBegin != thisRegionEnd):
+# 				view.sel().add(sublime.Region(thisRegionBegin, thisRegionEnd+1))
+# 			else:
+# 				view.sel().add(sublime.Region(thisRegionBegin, thisRegionBegin))
 			
 # Reference (no longer used)
 # class MoveToContigboundaryCommand(sublime_plugin.TextCommand):
@@ -219,3 +217,14 @@ class ExpandSelectionToSentenceCommand(sublime_plugin.TextCommand):
 # 				else:
 # 					view.sel().add(sublime.Region(caretPos+1))
 # 					view.show(caretPos+1)
+
+# Reference (no longer used)
+# class DeleteWordWhitespaceCommand(sublime_plugin.TextCommand):
+# 	def run(self, edit):
+# 		self.view.run_command("delete_word", {"forward": True})
+# 		for thisregion in self.view.sel():
+# 			if(self.view.substr(thisregion.begin()) in string.whitespace):
+# 					nonWhitespacePos = thisregion.begin()
+# 					while((self.view.substr(nonWhitespacePos) in string.whitespace) and (nonWhitespacePos < self.view.line(thisregion.begin()).end())):
+# 						nonWhitespacePos += 1
+# 					self.view.erase(edit, sublime.Region(thisregion.begin(), nonWhitespacePos))

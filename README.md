@@ -28,6 +28,6 @@ For Windows, you can use the recommended sample keybindings by adding the follow
 
 { "keys": ["ctrl+space"], "command": "expand_selection_to_delims" },
 { "keys": ["ctrl+shift+q"], "command": "expand_selection_to_quotes"},
-{ "keys": ["ctrl+shift+b"], "command": "expand_selection", "args": {"to": "brackets"} },
+{ "keys": ["ctrl+shift+b"], "command": "expand_selection_to_brackets"},
 { "keys": ["ctrl+delete"], "command": "delete_to_beg_next_contig_boundary" },
 ```
