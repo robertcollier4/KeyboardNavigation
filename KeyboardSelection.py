@@ -31,7 +31,10 @@ class MoveToBegOfContigBoundaryCommand(sublime_plugin.TextCommand):
 class MoveToBegOfSubwordBoundaryCommand(sublime_plugin.TextCommand):
 	def run(self, edit, forward):
 		# chr(34) is doublequote
-		subwordDelims = [" ", chr(34), ".", "+", "_", "<", ">", "[", "]", "{", "}", "-", "(", ")", "|", "\\"]
+		# chr(9) is tab
+		# chr(10) is new line
+		# chr(13) is carriage return
+		subwordDelims = [" ", chr(9), chr(10), chr(13), chr(34), ".", "+", "_", "<", ">", "[", "]", "{", "}", "-", "(", ")", "|", "\\"]
 		view = self.view
 		oldSelRegions = list(view.sel())
 		view.sel().clear()
@@ -61,9 +64,10 @@ class MoveToBegOfSubwordBoundaryCommand(sublime_plugin.TextCommand):
 
 class ExpandSelectionToDelimsCommand(sublime_plugin.TextCommand):
 	def run(self, edit):
-		# beginDelims = ["\"", "\'", "(", "<", "[", "{"]
-		# endDelims = ["\"", "\'", ")", ">", "]", "}"]
-		universalDelims = [" ", "\"", "\'", "-", "(", ")", "<", ">", "[", "]", "{", "}", ":", ".", ",", "%", "@", "&", "\t", "\n"]
+		# chr(9) is tab
+		# chr(10) is new line
+		# chr(13) is carriage return
+		universalDelims = [" ", "\"", "\'", "-", "(", ")", "<", ">", "[", "]", "{", "}", ":", ".", ",", "%", "@", "&", chr(9), "\n"]
 		view = self.view
 		oldSelRegions = list(view.sel())
 		for thisregion in oldSelRegions:
