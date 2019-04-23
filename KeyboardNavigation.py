@@ -1,6 +1,7 @@
 import sublime, sublime_plugin
 import string
 
+#---------------------------------------------------------------
 class MoveToBegOfContigBoundaryCommand(sublime_plugin.TextCommand):
 	def run(self, edit, forward):
 		view = self.view
@@ -61,6 +62,7 @@ class MoveToBegOfSubwordBoundaryCommand(sublime_plugin.TextCommand):
 				view.sel().add(sublime.Region(caretPos+1))
 				view.show(caretPos+1)
 
+#---------------------------------------------------------------
 class ExpandSelectionToDelimsCommand(sublime_plugin.TextCommand):
 	def run(self, edit):
 		view = self.view
@@ -142,19 +144,6 @@ class ExpandSelectionToWhitespaceCommand(sublime_plugin.TextCommand):
 			view.sel().add(sublime.Region(thisRegionBegin, thisRegionEnd))
 			# else:
 			# 	view.sel().add(sublime.Region(thisRegionBegin, thisRegionBegin))
-
-class DeleteToBegNextContigBoundaryCommand(sublime_plugin.TextCommand):
-	def run(self, edit):
-		view = self.view
-		# 32=space 9=tab 10=newline 13=carriagereturn 
-		whitespaceChars = [chr(32), chr(9), chr(10), chr(13)]
-		view.run_command("delete_word", {"forward": True})
-		for thisregion in self.view.sel():
-			if(self.view.substr(thisregion.begin()) in whitespaceChars):
-					nonWhitespacePos = thisregion.begin()
-					while((self.view.substr(nonWhitespacePos) in whitespaceChars) and (nonWhitespacePos < self.view.line(thisregion.begin()).end())):
-						nonWhitespacePos += 1
-					self.view.erase(edit, sublime.Region(thisregion.begin(), nonWhitespacePos))
 
 class SelectToNextContigBoundaryCommand(sublime_plugin.TextCommand):
 	def run(self, edit, forward):
@@ -267,7 +256,41 @@ class SelectToNextContigBoundaryCommand(sublime_plugin.TextCommand):
 class SelectToNextSubwordBoundaryCommand(sublime_plugin.TextCommand):
 	def run(self, edit, forward):
 		pass
+
+#---------------------------------------------------------------
+class DeleteToContigBoundaryCommand(sublime_plugin.TextCommand):
+	def run(self, edit, forward):
+		view = self.view
+		whiteChars = (chr(32), chr(9), chr(10), chr(13))
+		spaceChars = (chr(32), chr(9))
+		newlineChars = (chr(10), chr(13))
+		for thisregion in view.sel():
+			if(thisregion.a != thisregion.b):
+				view.erase(edit, sublime.Region(thisregion.begin(), thisregion.end()))
+			elif(forward): #forward
+				deletetoPos = thisregion.b
+				if(view.substr(deletetoPos) in newlineChars): # have newline to right of me
+					deletetoPos += 1
+				elif(view.substr(deletetoPos) in spaceChars): # have space to right of me
+					while((view.substr(deletetoPos) in spaceChars) and (deletetoPos < view.size())):
+						deletetoPos += 1
+				else: # have char to right of me
+					while((view.substr(deletetoPos) not in whiteChars) and (deletetoPos < view.size())):
+						deletetoPos += 1
+				view.erase(edit, sublime.Region(thisregion.a, deletetoPos))
+			else: #backward
+				deletetoPos = thisregion.a-1
+				if(view.substr(deletetoPos) in newlineChars): # have newline to left of me
+					deletetoPos -= 1
+				elif(view.substr(deletetoPos) in spaceChars): # have space to left of me
+					while((view.substr(deletetoPos) in spaceChars) and (deletetoPos >= 0)):
+						deletetoPos -= 1				
+				else: # have char to left of me
+					while((view.substr(deletetoPos) not in whiteChars) and (deletetoPos >= 0)):
+						deletetoPos -= 1
+				view.erase(edit, sublime.Region(thisregion.b, deletetoPos+1))
 		
+#---------------------------------------------------------------
 # Reference (no longer used)
 # class ExpandSelectionToSentenceCommand(sublime_plugin.TextCommand):
 # 	def run(self, edit):
@@ -329,12 +352,13 @@ class SelectToNextSubwordBoundaryCommand(sublime_plugin.TextCommand):
 # 					view.show(caretPos+1)
 
 # Reference (no longer used)
+# BROKEN
+# class DeleteToBegNextContigBoundaryCommand(sublime_plugin.TextCommand):
+# 	def run(self, edit):
+
+# Reference (no longer used)
+# BROKEN TODO
 # class DeleteWordWhitespaceCommand(sublime_plugin.TextCommand):
 # 	def run(self, edit):
-# 		self.view.run_command("delete_word", {"forward": True})
-# 		for thisregion in self.view.sel():
-# 			if(self.view.substr(thisregion.begin()) in whitespaceChars):
-# 					nonWhitespacePos = thisregion.begin()
-# 					while((self.view.substr(nonWhitespacePos) in whitespaceChars) and (nonWhitespacePos < self.view.line(thisregion.begin()).end())):
-# 						nonWhitespacePos += 1
-# 					self.view.erase(edit, sublime.Region(thisregion.begin(), nonWhitespacePos))
+
+#---------------------------------------------------------------
