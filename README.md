@@ -1,9 +1,9 @@
-# KeyboardSelectionSublime
+# KeyboardNavigation
 Keyboard movement and selection to custom delimeters. For SublimeText.
 
 ## Package Installation
-* Manual method: Download ZIP from github. Extract the files to [Sublime_Data_Dir](http://docs.sublimetext.info/en/latest/basic_concepts.html#the-data-directory)\Packages\keyboardSelection
-* Automatic method: Install 'keyboardSelectionSublime' from [Package Control](http://packagecontrol.io).
+* Manual method: Download ZIP from github. Extract the files to [Sublime_Data_Dir](http://docs.sublimetext.info/en/latest/basic_concepts.html#the-data-directory)\Packages\KeyboardNavigation
+* Automatic method: Install 'KeyboardNavigation' from [Package Control](http://packagecontrol.io).
 
 ## Key Bindings
 Sample keybindings:
@@ -18,7 +18,7 @@ Sample keybindings:
 
 Since these are redefining your very basic navigational keys, the package does not automatically overwrite your existing key bindings. You must choose to add the keybindings yourself specific to your OS.
 
-For Windows, you can use the recommended sample keybindings by adding the following lines to [Sublime_Data_Dir]\User\Default (Windows).sublime-keymap or [Sublime_Data_Dir]\KeyboardSelection\Default (Windows).sublime-keymap
+For Windows, you can use the recommended sample keybindings by adding the following lines to [Sublime_Data_Dir]\User\Default (Windows).sublime-keymap or [Sublime_Data_Dir]\KeyboardNavigation\Default (Windows).sublime-keymap
 ```
 { "keys": ["ctrl+left"], "command": "move_to_beg_of_contig_boundary", "args": {"forward": false} },
 { "keys": ["ctrl+right"], "command": "move_to_beg_of_contig_boundary", "args": {"forward": true} },
@@ -26,7 +26,8 @@ For Windows, you can use the recommended sample keybindings by adding the follow
 { "keys": ["alt+left"], "command": "move_to_beg_of_subword_boundary", "args": {"forward": false} },
 { "keys": ["alt+right"], "command": "move_to_beg_of_subword_boundary", "args": {"forward": true} },
 
-{ "keys": ["ctrl+space"], "command": "expand_selection_to_delims" },
+{ "keys": ["ctrl+shift+w"], "command": "expand_selection_to_whitespace" },
+{ "keys": ["ctrl+shift+e"], "command": "expand_selection_to_delims" },
 { "keys": ["ctrl+shift+q"], "command": "expand_selection_to_quotes"},
 { "keys": ["ctrl+shift+b"], "command": "expand_selection_to_brackets"},
 { "keys": ["ctrl+delete"], "command": "delete_to_beg_next_contig_boundary" },
