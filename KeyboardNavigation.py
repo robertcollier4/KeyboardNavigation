@@ -258,7 +258,48 @@ class SelectToNextSubwordBoundaryCommand(sublime_plugin.TextCommand):
 		pass
 
 #---------------------------------------------------------------
-class DeleteToContigBoundaryCommand(sublime_plugin.TextCommand):
+class homeendbeginningCommand(sublime_plugin.TextCommand):
+	def run(self, edit, forward):
+		view = self.view
+		oldSelRegions = list(view.sel())
+		view.sel().clear()
+		for thisregion in oldSelRegions:
+			if(forward): #forward
+				view.sel().add(view.line(thisregion).end())
+			else:
+				view.sel().add(view.line(thisregion).begin())
+
+#---------------------------------------------------------------
+class indentblanklineCommand(sublime_plugin.TextCommand):
+	def run(self, edit, forward):
+		view = self.view
+		for thisregion in view.sel():
+			# thisregionoriginal = thisregion
+			# theselines = view.lines(thisregion)
+			# theselines2 = view.split_by_newlines(view.line(thisregion))
+			thisregionlines = view.full_line(thisregion)
+			mycontent = view.substr(thisregionlines)
+			listlines = mycontent.splitlines(True)
+			numlines = len(listlines)
+			listlinesnew = list()			
+			if(forward): #forward
+				for thisline in listlines:
+					listlinesnew.append(chr(9)+thisline)
+				view.replace(edit, thisregionlines, ''.join(listlinesnew))
+				view.sel().clear()
+				view.sel().add(sublime.Region(thisregion.begin()+1, thisregion.end()+numlines))
+			else: #backward
+				for thisline in listlines:
+					if(thisline[0] == chr(9)):
+						listlinesnew.append(thisline[1:])
+					else:
+						listlinesnew.append(thisline)
+				view.replace(edit, thisregionlines, ''.join(listlinesnew))
+				# view.sel().clear()
+				# view.sel().add(sublime.Region(thisregion.begin()-1, thisregion.end()-numlines))
+
+#---------------------------------------------------------------
+class DeleteToBegOfContigBoundaryCommand(sublime_plugin.TextCommand):
 	def run(self, edit, forward):
 		view = self.view
 		whiteChars = (chr(32), chr(9), chr(10), chr(13))
@@ -271,21 +312,19 @@ class DeleteToContigBoundaryCommand(sublime_plugin.TextCommand):
 				deletetoPos = thisregion.b
 				if(view.substr(deletetoPos) in newlineChars): # have newline to right of me
 					deletetoPos += 1
-				elif(view.substr(deletetoPos) in spaceChars): # have space to right of me
-					while((view.substr(deletetoPos) in spaceChars) and (deletetoPos < view.size())):
-						deletetoPos += 1
-				else: # have char to right of me
+				else:
 					while((view.substr(deletetoPos) not in whiteChars) and (deletetoPos < view.size())):
+						deletetoPos += 1
+					while((view.substr(deletetoPos) in spaceChars) and (deletetoPos < view.size())):
 						deletetoPos += 1
 				view.erase(edit, sublime.Region(thisregion.a, deletetoPos))
 			else: #backward
 				deletetoPos = thisregion.a-1
 				if(view.substr(deletetoPos) in newlineChars): # have newline to left of me
 					deletetoPos -= 1
-				elif(view.substr(deletetoPos) in spaceChars): # have space to left of me
+				else:
 					while((view.substr(deletetoPos) in spaceChars) and (deletetoPos >= 0)):
-						deletetoPos -= 1				
-				else: # have char to left of me
+						deletetoPos -= 1							
 					while((view.substr(deletetoPos) not in whiteChars) and (deletetoPos >= 0)):
 						deletetoPos -= 1
 				view.erase(edit, sublime.Region(thisregion.b, deletetoPos+1))
@@ -350,15 +389,5 @@ class DeleteToContigBoundaryCommand(sublime_plugin.TextCommand):
 # 				else:
 # 					view.sel().add(sublime.Region(caretPos+1))
 # 					view.show(caretPos+1)
-
-# Reference (no longer used)
-# BROKEN
-# class DeleteToBegNextContigBoundaryCommand(sublime_plugin.TextCommand):
-# 	def run(self, edit):
-
-# Reference (no longer used)
-# BROKEN TODO
-# class DeleteWordWhitespaceCommand(sublime_plugin.TextCommand):
-# 	def run(self, edit):
 
 #---------------------------------------------------------------
