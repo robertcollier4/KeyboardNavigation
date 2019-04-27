@@ -68,3 +68,17 @@ For Windows, you can use the recommended sample keybindings by adding the follow
 { "keys": ["ctrl+alt+d"], "command": "delete_line_wo_linebreak" },
 { "keys": ["ctrl+alt+shift+d"], "command": "delete_line" },
 ```
+## how this compares with vim
+For a paradigm of where this is implemented in vim -  
+[https://docs.oracle.com/cd/E19683-01/806-7612/6jgfmsvqf/index.html](https://docs.oracle.com/cd/E19683-01/806-7612/6jgfmsvqf/index.html)  
+[https://stackoverflow.com/questions/22931032/vim-word-vs-word](https://stackoverflow.com/questions/22931032/vim-word-vs-word)  
+[https://www.computerhope.com/unix/vim.htm](https://www.computerhope.com/unix/vim.htm) - "Moving From Word To Word"  
+[https://vim.rtorr.com/](https://vim.rtorr.com/)  
+[https://forum.sublimetext.com/t/change-cursor-position-at-beginning-of-next-word-when-moving/21474](https://forum.sublimetext.com/t/change-cursor-position-at-beginning-of-next-word-when-moving/21474)
+```
+Press w (“word”) to move the cursor to the right one word at a time.
+Press b (“back”) to move the cursor to the left one word at a time.
+```
+I found that Sublime's move "words" and "words_ends" keybindings of vim's "b" and "w" emulation mode still stop at punctuation characters even if you make "word_separators" blank.
+
+KeyboardNavigation allows vim "w" and "b" like movement fastly through contiguous boundaries.
