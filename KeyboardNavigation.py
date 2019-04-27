@@ -6,101 +6,72 @@ class MoveToBegOfContigBoundaryCommand(sublime_plugin.TextCommand):
 	def run(self, edit, forward):
 		view = self.view
 		# 32=space 9=tab 10=newline 13=carriagereturn 
-		whitespaceChars = [chr(32), chr(9), chr(10), chr(13)]
-		oldSelRegions = list(view.sel())
-		view.sel().clear()
-		for thisregion in oldSelRegions:
+		whiteChars = (chr(32), chr(9), chr(10), chr(13))
+		spaceChars = (chr(32), chr(9))  
+		# newlineChars = (chr(10), chr(13))
+		for thisregion in view.sel():
 			if(forward): #forward
-				caretPos = thisregion.b
-				if(view.substr(caretPos) not in whitespaceChars): #initially have char right of me, find whitespace
-					while ((view.substr(caretPos) not in whitespaceChars) and (caretPos < view.size())):
-						caretPos += 1
-				while((view.substr(caretPos) in whitespaceChars) and (caretPos < view.size())): #now have whitespace right of me, find char beginning
-					caretPos += 1
-				else:
-					view.sel().add(sublime.Region(caretPos))
-					view.show(caretPos)
+				thisRegionBegin = thisregion.a
+				thisRegionEnd = thisregion.b
+				while ((view.substr(thisRegionEnd) not in whiteChars) and (thisRegionEnd < view.size())):
+					thisRegionEnd += 1
+				while((view.substr(thisRegionEnd) in spaceChars) and (thisRegionEnd < view.size())):
+					thisRegionEnd += 1
+				if(thisRegionEnd == thisregion.b):
+					thisRegionEnd += 1
+				view.sel().clear()
+				view.sel().add(sublime.Region(thisRegionEnd))
+				view.show(thisRegionEnd+1)
 			else: #backward
-				caretPos = thisregion.b - 1
-				if(view.substr(caretPos) in whitespaceChars): #initially have whitespace left of me, find char
-					while ((view.substr(caretPos) in whitespaceChars) and (caretPos >= 0)):
-						caretPos -= 1
-				while ((view.substr(caretPos) not in whitespaceChars) and (caretPos >= 0)): #now have char left of me, find whitespace
-					caretPos -= 1
-				else:
-					view.sel().add(sublime.Region(caretPos+1))
-					view.show(caretPos+1)
+				thisRegionBegin = thisregion.a
+				thisRegionEnd = thisregion.b-1
+				while ((view.substr(thisRegionEnd) in spaceChars) and (thisRegionEnd >= -1)):
+					thisRegionEnd -= 1
+				while ((view.substr(thisRegionEnd) not in whiteChars) and (thisRegionEnd >= -1)):
+					thisRegionEnd -= 1
+				if(thisRegionEnd+1 == thisregion.b):
+					thisRegionEnd -= 1
+				view.sel().clear()
+				view.sel().add(sublime.Region(thisRegionEnd+1))
+				view.show(thisRegionEnd)
 
 class MoveToBegOfSubwordBoundaryCommand(sublime_plugin.TextCommand):
 	def run(self, edit, forward):
 		view = self.view
 		# 32=space 9=tab 10=newline 13=carriagereturn 34=" 39=' 37=% 64=@ 38=& 58=: 46=. 44=, 43=+ 95=_ 45=- 60=< 62=> 40=( 41=) 91=[ 93=] 123={ 125=} 124=| 92=\
 		subwordDelims = [chr(32), chr(9), chr(10), chr(13), chr(34), chr(39), chr(37), chr(64), chr(38), chr(58), chr(46), chr(44), chr(43), chr(95), chr(45), chr(60), chr(62), chr(40), chr(41), chr(91), chr(93), chr(123), chr(125), chr(124), chr(92)]
-		oldSelRegions = list(view.sel())
-		view.sel().clear()
-		for thisregion in oldSelRegions:
+		for thisregion in view.sel():
 			if(forward): #forward
-				caretPos = thisregion.b
-				haveMovedAtleastOnce = False
-				while ( (view.substr(caretPos) not in subwordDelims) and (caretPos < view.size()) ):
-					if(not haveMovedAtleastOnce):
-						haveMovedAtleastOnce = True
-					caretPos += 1
-				if(not haveMovedAtleastOnce):
-					caretPos += 1
-				view.sel().add(sublime.Region(caretPos))
-				view.show(caretPos)
+				thisRegionBegin = thisregion.a
+				thisRegionEnd = thisregion.b
+				while ( (view.substr(thisRegionEnd) not in subwordDelims) and (thisRegionEnd < view.size()) ):
+					thisRegionEnd += 1
+				if(thisRegionEnd == thisregion.b):
+					thisRegionEnd += 1
+				view.sel().clear()
+				view.sel().add(sublime.Region(thisRegionEnd))
+				view.show(thisRegionEnd+1)
 			else: #backward
-				caretPos = thisregion.b - 1
-				haveMovedAtleastOnce = False
-				while ( (view.substr(caretPos) not in subwordDelims) and (caretPos >= 0) ):
-					if(not haveMovedAtleastOnce):
-						haveMovedAtleastOnce = True
-					caretPos -= 1
-				if(not haveMovedAtleastOnce):
-					caretPos -= 1
-				view.sel().add(sublime.Region(caretPos+1))
-				view.show(caretPos+1)
+				thisRegionBegin = thisregion.a
+				thisRegionEnd = thisregion.b-1
+				while ( (view.substr(thisRegionEnd) not in subwordDelims) and (thisRegionEnd >= 0) ):
+					thisRegionEnd -= 1
+				if(thisRegionEnd+1 == thisregion.b):
+					thisRegionEnd -= 1
+				view.sel().clear()
+				view.sel().add(sublime.Region(thisRegionEnd+1))
+				view.show(thisRegionEnd)
 
 #---------------------------------------------------------------
 class SelectToBegOfContigBoundaryCommand(sublime_plugin.TextCommand):
 	def run(self, edit, forward):
 		view = self.view
 		# 32=space 9=tab 10=newline 13=carriagereturn 
-		# whitespaceChars = [chr(32), chr(9), chr(10), chr(13)]
 		whiteChars = (chr(32), chr(9), chr(10), chr(13))
 		spaceChars = (chr(32), chr(9))  
-		newlineChars = (chr(10), chr(13))
-		oldSelRegions = list(view.sel())
-		view.sel().clear()
-		for thisregion in oldSelRegions:
+		# newlineChars = (chr(10), chr(13))
+		for thisregion in view.sel():
 			if(thisregion.a == thisregion.b):
-				if(forward): #forward
-					thisRegionBegin = thisregion.a
-					thisRegionEnd = thisregion.b
-					while ((view.substr(thisRegionEnd) not in whiteChars) and (thisRegionEnd < view.size())):
-						thisRegionEnd += 1
-					while((view.substr(thisRegionEnd) in spaceChars) and (thisRegionEnd < view.size())):
-						thisRegionEnd += 1
-					if(thisRegionBegin == thisRegionEnd):
-						thisRegionEnd += 1
-					view.sel().clear()
-					view.sel().add(sublime.Region(thisRegionBegin, thisRegionEnd))
-					view.show(thisRegionEnd+1)
-				else: #backward
-					thisRegionBegin = thisregion.a
-					thisRegionEnd = thisregion.b-1
-					while ((view.substr(thisRegionEnd) in spaceChars) and (thisRegionEnd >= -1)):
-						thisRegionEnd -= 1
-					while ((view.substr(thisRegionEnd) not in whiteChars) and (thisRegionEnd >= -1)):
-						thisRegionEnd -= 1
-					if(thisRegionEnd+1 == thisRegionBegin):
-						thisRegionEnd -= 1
-					view.sel().clear()
-					view.sel().add(sublime.Region(thisRegionBegin, thisRegionEnd+1))
-					view.show(thisRegionEnd)
-			elif(thisregion.a < thisregion.b):
-				pass
 				if(forward): #forward
 					thisRegionBegin = thisregion.a
 					thisRegionEnd = thisregion.b
@@ -116,13 +87,37 @@ class SelectToBegOfContigBoundaryCommand(sublime_plugin.TextCommand):
 				else: #backward
 					thisRegionBegin = thisregion.a
 					thisRegionEnd = thisregion.b-1
-					if(view.substr(thisRegionEnd) in newlineChars):
+					while ((view.substr(thisRegionEnd) in spaceChars) and (thisRegionEnd >= -1)):
 						thisRegionEnd -= 1
-					else:
-						while ((view.substr(thisRegionEnd) not in newlineChars) and (view.substr(thisRegionEnd) in spaceChars) and (thisRegionEnd > thisRegionBegin-1) and (thisRegionEnd >= -1)):
-							thisRegionEnd -= 1
-						while ((view.substr(thisRegionEnd) not in newlineChars) and (view.substr(thisRegionEnd) not in spaceChars) and (thisRegionEnd > thisRegionBegin-1) and (thisRegionEnd >= -1)):
-							thisRegionEnd -= 1
+					while ((view.substr(thisRegionEnd) not in whiteChars) and (thisRegionEnd >= -1)):
+						thisRegionEnd -= 1
+					if(thisRegionEnd+1 == thisregion.b):
+						thisRegionEnd += 1					
+					view.sel().clear()
+					view.sel().add(sublime.Region(thisRegionBegin, thisRegionEnd+1))
+					view.show(thisRegionEnd)
+			elif(thisregion.a < thisregion.b):
+				if(forward): #forward
+					thisRegionBegin = thisregion.a
+					thisRegionEnd = thisregion.b
+					while ((view.substr(thisRegionEnd) not in whiteChars) and (thisRegionEnd < view.size())):
+						thisRegionEnd += 1
+					while((view.substr(thisRegionEnd) in spaceChars) and (thisRegionEnd < view.size())):
+						thisRegionEnd += 1
+					if(thisRegionEnd == thisregion.b):
+						thisRegionEnd += 1
+					view.sel().clear()
+					view.sel().add(sublime.Region(thisRegionBegin, thisRegionEnd))
+					view.show(thisRegionEnd+1)
+				else: #backward
+					thisRegionBegin = thisregion.a
+					thisRegionEnd = thisregion.b-1
+					while ((view.substr(thisRegionEnd) in spaceChars) and (thisRegionEnd > thisRegionBegin-1) and (thisRegionEnd >= -1)):
+						thisRegionEnd -= 1
+					while ((view.substr(thisRegionEnd) not in whiteChars) and (thisRegionEnd > thisRegionBegin-1) and (thisRegionEnd >= -1)):
+						thisRegionEnd -= 1
+					if(thisRegionEnd+1 == thisregion.b):
+						thisRegionEnd -= 1
 					view.sel().clear()
 					view.sel().add(sublime.Region(thisRegionBegin, thisRegionEnd+1))
 					view.show(thisRegionEnd)
@@ -130,34 +125,97 @@ class SelectToBegOfContigBoundaryCommand(sublime_plugin.TextCommand):
 				if(forward): #forward
 					thisRegionBegin = thisregion.a
 					thisRegionEnd = thisregion.b
-					if(view.substr(thisRegionEnd) in newlineChars):
+					while ((view.substr(thisRegionEnd) not in whiteChars) and (thisRegionEnd < thisRegionBegin) and (thisRegionEnd < view.size())):
 						thisRegionEnd += 1
-					else:
-						while ((view.substr(thisRegionEnd) not in whiteChars) and (thisRegionEnd < thisRegionBegin) and (thisRegionEnd < view.size())):
-							thisRegionEnd += 1
-						while((view.substr(thisRegionEnd) in spaceChars) and (thisRegionEnd < thisRegionBegin) and (thisRegionEnd < view.size())):
-							thisRegionEnd += 1
+					while((view.substr(thisRegionEnd) in spaceChars) and (thisRegionEnd < thisRegionBegin) and (thisRegionEnd < view.size())):
+						thisRegionEnd += 1
+					if(thisRegionEnd == thisregion.b):
+						thisRegionEnd += 1
 					view.sel().clear()
 					view.sel().add(sublime.Region(thisRegionBegin, thisRegionEnd))
 					view.show(thisRegionEnd+1)
 				else: #backward
 					thisRegionBegin = thisregion.a
 					thisRegionEnd = thisregion.b-1
-					if(view.substr(thisRegionEnd) in newlineChars):
+					while ((view.substr(thisRegionEnd) in spaceChars) and (thisRegionEnd >= -1)):
 						thisRegionEnd -= 1
-					else:
-						while ((view.substr(thisRegionEnd) in spaceChars) and (thisRegionEnd >= -1)):
-							thisRegionEnd -= 1
-						while ((view.substr(thisRegionEnd) not in whiteChars) and (thisRegionEnd >= -1)):
-							thisRegionEnd -= 1
+					while ((view.substr(thisRegionEnd) not in whiteChars) and (thisRegionEnd >= -1)):
+						thisRegionEnd -= 1
+					if(thisRegionEnd+1 == thisregion.b):
+						thisRegionEnd -= 1
 					view.sel().clear()
 					view.sel().add(sublime.Region(thisRegionBegin, thisRegionEnd+1))
 					view.show(thisRegionEnd)
 
-# TODO - pull requests welcome
 class SelectToBegOfSubwordBoundaryCommand(sublime_plugin.TextCommand):
 	def run(self, edit, forward):
-		pass
+		view = self.view
+		# 32=space 9=tab 10=newline 13=carriagereturn 34=" 39=' 37=% 64=@ 38=& 58=: 46=. 44=, 43=+ 95=_ 45=- 60=< 62=> 40=( 41=) 91=[ 93=] 123={ 125=} 124=| 92=\
+		subwordDelims = [chr(32), chr(9), chr(10), chr(13), chr(34), chr(39), chr(37), chr(64), chr(38), chr(58), chr(46), chr(44), chr(43), chr(95), chr(45), chr(60), chr(62), chr(40), chr(41), chr(91), chr(93), chr(123), chr(125), chr(124), chr(92)]
+		for thisregion in view.sel():
+			if(thisregion.a == thisregion.b):
+				if(forward): #forward
+					thisRegionBegin = thisregion.a
+					thisRegionEnd = thisregion.b
+					while( (view.substr(thisRegionEnd) not in subwordDelims) and (thisRegionEnd < view.size()) ):
+						thisRegionEnd += 1
+					if(thisRegionEnd == thisRegionBegin):
+						thisRegionEnd += 1
+					view.sel().clear()
+					view.sel().add(sublime.Region(thisRegionBegin, thisRegionEnd))
+					view.show(thisRegionEnd+1)
+				else: #backward
+					thisRegionBegin = thisregion.a
+					thisRegionEnd = thisregion.b-1
+					while( (view.substr(thisRegionEnd) not in subwordDelims) and (thisRegionEnd >= 0) ):
+						thisRegionEnd -= 1
+					if(thisRegionEnd+1 == thisRegionBegin):
+						thisRegionEnd -= 1
+					view.sel().clear()
+					view.sel().add(sublime.Region(thisRegionBegin, thisRegionEnd+1))
+					view.show(thisRegionEnd)
+			elif(thisregion.a < thisregion.b):
+				if(forward): #forward
+					thisRegionBegin = thisregion.a
+					thisRegionEnd = thisregion.b
+					while( (view.substr(thisRegionEnd) not in subwordDelims) and (thisRegionEnd < view.size()) ):
+						thisRegionEnd += 1
+					if(thisRegionEnd == thisregion.b):
+						thisRegionEnd += 1
+					view.sel().clear()
+					view.sel().add(sublime.Region(thisRegionBegin, thisRegionEnd))
+					view.show(thisRegionEnd+1)
+				else: #backward
+					thisRegionBegin = thisregion.a
+					thisRegionEnd = thisregion.b-1
+					while( (view.substr(thisRegionEnd) not in subwordDelims) and (thisRegionEnd >= 0) ):
+						thisRegionEnd -= 1
+					if(thisRegionEnd+1 == thisregion.b):
+						thisRegionEnd -= 1
+					view.sel().clear()
+					view.sel().add(sublime.Region(thisRegionBegin, thisRegionEnd+1))
+					view.show(thisRegionEnd)
+			else: # thisregion.a > thisregion.b
+				if(forward): #forward
+					thisRegionBegin = thisregion.a
+					thisRegionEnd = thisregion.b
+					while( (view.substr(thisRegionEnd) not in subwordDelims) and (thisRegionEnd < view.size()) ):
+						thisRegionEnd += 1
+					if(thisRegionEnd == thisregion.b):
+						thisRegionEnd += 1
+					view.sel().clear()
+					view.sel().add(sublime.Region(thisRegionBegin, thisRegionEnd))
+					view.show(thisRegionEnd+1)
+				else: #backward
+					thisRegionBegin = thisregion.a
+					thisRegionEnd = thisregion.b-1
+					while( (view.substr(thisRegionEnd) not in subwordDelims) and (thisRegionEnd >= 0) ):
+						thisRegionEnd -= 1
+					if(thisRegionEnd+1 == thisregion.b):
+						thisRegionEnd -= 1
+					view.sel().clear()
+					view.sel().add(sublime.Region(thisRegionBegin, thisRegionEnd+1))
+					view.show(thisRegionEnd)
 
 #---------------------------------------------------------------
 class ExpandSelectionToDelimsCommand(sublime_plugin.TextCommand):
@@ -165,8 +223,7 @@ class ExpandSelectionToDelimsCommand(sublime_plugin.TextCommand):
 		view = self.view
 		# 32=space 9=tab 10=newline 13=carriagereturn 34=" 39=' 37=% 64=@ 38=& 58=: 46=. 44=, 43=+ 95=_ 45=- 60=< 62=> 40=( 41=) 91=[ 93=] 123={ 125=} 124=| 92=\
 		subwordDelims = [chr(32), chr(9), chr(10), chr(13), chr(34), chr(39), chr(37), chr(64), chr(38), chr(58), chr(46), chr(44), chr(43), chr(95), chr(45), chr(60), chr(62), chr(40), chr(41), chr(91), chr(93), chr(123), chr(125), chr(124), chr(92)]
-		oldSelRegions = list(view.sel())
-		for thisregion in oldSelRegions:
+		for thisregion in view.sel():
 			thisRegionBegin = thisregion.begin() - 1
 			thisRegionEnd = thisregion.end()
 			if( (thisregion.begin() != thisRegionEnd) and (view.substr(thisRegionBegin) in subwordDelims) ):
@@ -180,6 +237,7 @@ class ExpandSelectionToDelimsCommand(sublime_plugin.TextCommand):
 			while((view.substr(thisRegionEnd) not in subwordDelims) and (thisRegionEnd < view.size())):
 				thisRegionEnd += 1
 
+			# view.sel().clear()
 			view.sel().add(sublime.Region(thisRegionBegin, thisRegionEnd))
 
 class ExpandSelectionToQuotesCommand(sublime_plugin.TextCommand):
@@ -188,8 +246,7 @@ class ExpandSelectionToQuotesCommand(sublime_plugin.TextCommand):
 		# 34=" 39=' 
 		beginDelims = [chr(34), chr(39)]
 		endDelims = [chr(34), chr(39)]
-		oldSelRegions = list(view.sel())
-		for thisregion in oldSelRegions:
+		for thisregion in view.sel():
 			thisRegionBegin = thisregion.begin() - 1
 			thisRegionEnd = thisregion.end()
 			while ((view.substr(thisRegionBegin) not in beginDelims) and (thisRegionBegin >= 0)):
@@ -199,6 +256,7 @@ class ExpandSelectionToQuotesCommand(sublime_plugin.TextCommand):
 			while((view.substr(thisRegionEnd) not in endDelims) and (thisRegionEnd < view.size())):
 				thisRegionEnd += 1
 
+			# view.sel().clear()
 			view.sel().add(sublime.Region(thisRegionBegin, thisRegionEnd))
 
 class ExpandSelectionToBracketsCommand(sublime_plugin.TextCommand):
@@ -207,8 +265,7 @@ class ExpandSelectionToBracketsCommand(sublime_plugin.TextCommand):
 		# 60=< 62=> 40=( 41=) 91=[ 93=] 123={ 125=}
 		beginDelims = [chr(60), chr(40), chr(91), chr(123)]
 		endDelims = [chr(62), chr(41), chr(93), chr(125)]
-		oldSelRegions = list(view.sel())
-		for thisregion in oldSelRegions:
+		for thisregion in view.sel():
 			thisRegionBegin = thisregion.begin() - 1
 			thisRegionEnd = thisregion.end()
 			while ((view.substr(thisRegionBegin) not in beginDelims) and (thisRegionBegin >= 0)):
@@ -218,26 +275,26 @@ class ExpandSelectionToBracketsCommand(sublime_plugin.TextCommand):
 			while((view.substr(thisRegionEnd) not in endDelims) and (thisRegionEnd < view.size())):
 				thisRegionEnd += 1
 
+			# view.sel().clear()
 			view.sel().add(sublime.Region(thisRegionBegin, thisRegionEnd))
 
 class ExpandSelectionToWhitespaceCommand(sublime_plugin.TextCommand):
 	def run(self, edit):
 		view = self.view
 		# 32=space 9=tab 10=newline 13=carriagereturn 
-		whitespaceChars = [chr(32), chr(9), chr(10), chr(13)]
-		oldSelRegions = list(view.sel())
-		# view.sel().clear()
-		for thisregion in oldSelRegions:
+		whiteChars = (chr(32), chr(9), chr(10), chr(13))
+		for thisregion in view.sel():
 			thisRegionBegin = thisregion.begin() - 1
-			while ((view.substr(thisRegionBegin) not in whitespaceChars) and (thisRegionBegin >= 0)):
+			while ((view.substr(thisRegionBegin) not in whiteChars) and (thisRegionBegin >= 0)):
 				thisRegionBegin -= 1
 			thisRegionBegin += 1
 
 			thisRegionEnd = thisregion.end()
-			while((view.substr(thisRegionEnd) not in whitespaceChars) and (thisRegionEnd < view.size())):
+			while((view.substr(thisRegionEnd) not in whiteChars) and (thisRegionEnd < view.size())):
 				thisRegionEnd += 1
 
 			# if(thisRegionBegin != thisRegionEnd):
+			# view.sel().clear()
 			view.sel().add(sublime.Region(thisRegionBegin, thisRegionEnd))
 			# else:
 			# 	view.sel().add(sublime.Region(thisRegionBegin, thisRegionBegin))
@@ -246,12 +303,12 @@ class ExpandSelectionToWhitespaceCommand(sublime_plugin.TextCommand):
 class homeendbeginningCommand(sublime_plugin.TextCommand):
 	def run(self, edit, forward):
 		view = self.view
-		oldSelRegions = list(view.sel())
-		view.sel().clear()
-		for thisregion in oldSelRegions:
+		for thisregion in view.sel():
 			if(forward): #forward
+				view.sel().clear()
 				view.sel().add(view.line(thisregion).end())
-			else:
+			else: #backward
+				view.sel().clear()
 				view.sel().add(view.line(thisregion).begin())
 
 #---------------------------------------------------------------
@@ -259,7 +316,6 @@ class indentblanklineCommand(sublime_plugin.TextCommand):
 	def run(self, edit, forward):
 		view = self.view
 		for thisregion in view.sel():
-			# thisregionoriginal = thisregion
 			# theselines = view.lines(thisregion)
 			# theselines2 = view.split_by_newlines(view.line(thisregion))
 			thisregionlines = view.full_line(thisregion)
@@ -280,6 +336,7 @@ class indentblanklineCommand(sublime_plugin.TextCommand):
 					else:
 						listlinesnew.append(thisline)
 				view.replace(edit, thisregionlines, ''.join(listlinesnew))
+				# not needed to rebuild the selection
 				# view.sel().clear()
 				# view.sel().add(sublime.Region(thisregion.begin()-1, thisregion.end()-numlines))
 
@@ -289,31 +346,62 @@ class DeleteToBegOfContigBoundaryCommand(sublime_plugin.TextCommand):
 		view = self.view
 		whiteChars = (chr(32), chr(9), chr(10), chr(13))
 		spaceChars = (chr(32), chr(9))
-		newlineChars = (chr(10), chr(13))
+		# newlineChars = (chr(10), chr(13))
 		for thisregion in view.sel():
 			if(thisregion.a != thisregion.b):
 				view.erase(edit, sublime.Region(thisregion.begin(), thisregion.end()))
 			elif(forward): #forward
-				deletetoPos = thisregion.b
-				if(view.substr(deletetoPos) in newlineChars): # have newline to right of me
-					deletetoPos += 1
-				else:
-					while((view.substr(deletetoPos) not in whiteChars) and (deletetoPos < view.size())):
-						deletetoPos += 1
-					while((view.substr(deletetoPos) in spaceChars) and (deletetoPos < view.size())):
-						deletetoPos += 1
-				view.erase(edit, sublime.Region(thisregion.a, deletetoPos))
+				thisRegionBegin = thisregion.a
+				thisRegionEnd = thisregion.b
+				while ((view.substr(thisRegionEnd) not in whiteChars) and (thisRegionEnd < view.size())):
+					thisRegionEnd += 1
+				while((view.substr(thisRegionEnd) in spaceChars) and (thisRegionEnd < view.size())):
+					thisRegionEnd += 1
+				if(thisRegionEnd == thisregion.b):
+					thisRegionEnd += 1
+				view.erase(edit, sublime.Region(thisRegionBegin, thisRegionEnd))
 			else: #backward
-				deletetoPos = thisregion.a-1
-				if(view.substr(deletetoPos) in newlineChars): # have newline to left of me
-					deletetoPos -= 1
-				else:
-					while((view.substr(deletetoPos) in spaceChars) and (deletetoPos >= 0)):
-						deletetoPos -= 1							
-					while((view.substr(deletetoPos) not in whiteChars) and (deletetoPos >= 0)):
-						deletetoPos -= 1
-				view.erase(edit, sublime.Region(thisregion.b, deletetoPos+1))
-		
+				thisRegionBegin = thisregion.a
+				thisRegionEnd = thisregion.b-1
+				while ((view.substr(thisRegionEnd) in spaceChars) and (thisRegionEnd >= -1)):
+					thisRegionEnd -= 1
+				while ((view.substr(thisRegionEnd) not in whiteChars) and (thisRegionEnd >= -1)):
+					thisRegionEnd -= 1
+				if(thisRegionEnd+1 == thisregion.b):
+					thisRegionEnd -= 1
+				view.erase(edit, sublime.Region(thisRegionBegin, thisRegionEnd+1))
+
+#---------------------------------------------------------------
+class DeleteLineCommand(sublime_plugin.TextCommand):
+	def run(self, edit):
+		view = self.view
+		for thisRegion in view.sel():
+			self.view.erase(edit, view.full_line(thisRegion))
+
+class DeleteLineWoLinebreakCommand(sublime_plugin.TextCommand):
+	def run(self, edit):
+		view = self.view
+		for thisRegion in view.sel():
+			self.view.erase(edit, view.line(thisRegion))
+
+class SelectLineCommand(sublime_plugin.TextCommand):
+	def run(self, edit):
+		view = self.view
+		for thisRegion in view.sel():
+			thisRegionToDelete = view.full_line(thisRegion)
+			# view.sel().clear()
+			view.sel().add(view.full_line(thisRegion))
+			# self.view.erase(edit, thisRegionToDelete)
+
+class SelectLineWoLinebreakCommand(sublime_plugin.TextCommand):
+	def run(self, edit):
+		view = self.view
+		for thisRegion in view.sel():
+			thisRegionToDelete = view.line(thisRegion)
+			# view.sel().clear()
+			view.sel().add(view.line(thisRegion))
+			# self.view.erase(edit, thisRegionToDelete)
+
 #---------------------------------------------------------------
 # Reference (no longer used)
 # class ExpandSelectionToSentenceCommand(sublime_plugin.TextCommand):
