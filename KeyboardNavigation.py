@@ -217,6 +217,21 @@ class SelectToBegOfSubwordBoundaryCommand(sublime_plugin.TextCommand):
 					view.sel().add(sublime.Region(thisRegionBegin, thisRegionEnd+1))
 					view.show(thisRegionEnd)
 
+class SelectToKnLinelimitCommand(sublime_plugin.TextCommand):
+	def run(self, edit, forward):
+		view = self.view
+		for thisregion in view.sel():
+			if(forward): #forward
+				thisRegionEnd = view.line(thisregion).end()
+				view.sel().clear()
+				view.sel().add(sublime.Region(thisregion.a, thisRegionEnd))
+				view.show(thisRegionEnd)
+			else: #backward
+				view.sel().clear()
+				thisRegionEnd = view.line(thisregion).begin()
+				view.sel().add(sublime.Region(thisregion.a, thisRegionEnd))
+				view.show(thisRegionEnd)	
+
 #---------------------------------------------------------------
 class ExpandSelectionToDelimsCommand(sublime_plugin.TextCommand):
 	def run(self, edit):
@@ -361,6 +376,7 @@ class DeleteToBegOfContigBoundaryCommand(sublime_plugin.TextCommand):
 		for thisregion in view.sel():
 			if(thisregion.a != thisregion.b):
 				view.erase(edit, sublime.Region(thisregion.begin(), thisregion.end()))
+				# view.show(thisRegionEnd) #dont show move
 			elif(forward): #forward
 				thisRegionBegin = thisregion.a
 				thisRegionEnd = thisregion.b
@@ -371,6 +387,7 @@ class DeleteToBegOfContigBoundaryCommand(sublime_plugin.TextCommand):
 				if(thisRegionEnd == thisregion.b):
 					thisRegionEnd += 1
 				view.erase(edit, sublime.Region(thisRegionBegin, thisRegionEnd))
+				# view.show(thisRegionEnd) #dont show move
 			else: #backward
 				thisRegionBegin = thisregion.a
 				thisRegionEnd = thisregion.b-1
@@ -381,7 +398,36 @@ class DeleteToBegOfContigBoundaryCommand(sublime_plugin.TextCommand):
 				if(thisRegionEnd+1 == thisregion.b):
 					thisRegionEnd -= 1
 				view.erase(edit, sublime.Region(thisRegionBegin, thisRegionEnd+1))
-
+				view.show(thisRegionEnd)
+				
+class DeleteToBegOfSubwordBoundaryCommand(sublime_plugin.TextCommand):
+	def run(self, edit, forward):
+		view = self.view
+		# 32=space 9=tab 10=newline 13=carriagereturn 34=" 39=' 37=% 64=@ 38=& 58=: 46=. 44=, 43=+ 95=_ 45=- 60=< 62=> 40=( 41=) 91=[ 93=] 123={ 125=} 124=| 92=\
+		subwordDelims = [chr(32), chr(9), chr(10), chr(13), chr(34), chr(39), chr(37), chr(64), chr(38), chr(58), chr(46), chr(44), chr(43), chr(95), chr(45), chr(60), chr(62), chr(40), chr(41), chr(91), chr(93), chr(123), chr(125), chr(124), chr(92)]
+		for thisregion in view.sel():
+			if(thisregion.a != thisregion.b):
+				view.erase(edit, sublime.Region(thisregion.a, thisregion.b))
+				# view.show(thisRegionEnd) #dont show move
+			elif(forward): #forward
+				# thisRegionBegin = thisregion.a
+				thisRegionEnd = thisregion.b
+				while ( (view.substr(thisRegionEnd) not in subwordDelims) and (thisRegionEnd < view.size()) ):
+					thisRegionEnd += 1
+				if(thisRegionEnd == thisregion.b):
+					thisRegionEnd += 1
+				view.erase(edit, sublime.Region(thisregion.a, thisRegionEnd))
+				# view.show(thisRegionEnd) #dont show move
+			else: #backward
+				# thisRegionBegin = thisregion.a
+				thisRegionEnd = thisregion.b-1
+				while ( (view.substr(thisRegionEnd) not in subwordDelims) and (thisRegionEnd >= 0) ):
+					thisRegionEnd -= 1
+				if(thisRegionEnd+1 == thisregion.b):
+					thisRegionEnd -= 1
+				view.erase(edit, sublime.Region(thisregion.a, thisRegionEnd+1))
+				view.show(thisRegionEnd)
+				
 #---------------------------------------------------------------
 class DeleteLineCommand(sublime_plugin.TextCommand):
 	def run(self, edit):
