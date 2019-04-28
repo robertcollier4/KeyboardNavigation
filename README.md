@@ -19,8 +19,8 @@ Sample Keybindings:
 * <kbd>ctrl+shift+e</kbd> expand_selection_to_delims - expand selection to (space), (tab), (newline), ", ', %, @, &, :, (period), (comma), +, _, -, <, >, (, ), [, ], {, }, |, \
 * <kbd>ctrl+shift+q</kbd> expand_selection_to_quotes - expand selection to ", '
 * <kbd>ctrl+shift+b</kbd> expand_selection_to_brackets - expand selection to (, ), <, >, [, ], {, }
-* <kbd>home</kbd> move cursor to beginning of line (this one goes all the way to the beginning whereas the native one goes to the beginning of indentation)
-* <kbd>end</kbd> move cursor to end of line
+* <kbd>home</kbd> move cursor to beginning of line limit (goes all the way to the beginning whereas the native one goes to beginning of indentation)
+* <kbd>end</kbd> move cursor to end of line limit
 * <kbd>ctrl+alt+-</kbd> indent less (to the left)
 * <kbd>ctrl+alt+=</kbd> indent more (to the right) (even works with blank line which the native one does not)
 * <kbd>ctrl+backspace</kbd> delete(backspace) to previous contiguous boundary demarcated by a whitespace
@@ -54,11 +54,11 @@ For Windows, you can use the recommended sample keybindings by adding the follow
 { "keys": ["ctrl+shift+b"], "command": "expand_selection_to_brackets"},
 { "keys": ["ctrl+shift+l"], "command": "expand_selection", "args": {"to": "line"} },
 
-{ "keys": ["home"], "command": "homeendbeginning", "args": {"forward": false} },
-{ "keys": ["end"], "command": "homeendbeginning", "args": {"forward": true} },
+{ "keys": ["home"], "command": "kn_linelimit", "args": {"forward": false} },
+{ "keys": ["end"], "command": "kn_linelimit", "args": {"forward": true} },
 
-{ "keys": ["ctrl+alt+-"], "command": "indentblankline", "args": {"forward": false} },
-{ "keys": ["ctrl+alt+="], "command": "indentblankline", "args": {"forward": true} }
+{ "keys": ["ctrl+alt+-"], "command": "kn_indent", "args": {"forward": false} },
+{ "keys": ["ctrl+alt+="], "command": "kn_indent", "args": {"forward": true} }
 
 { "keys": ["ctrl+backspace"], "command": "delete_to_beg_of_contig_boundary", "args": {"forward": false} },
 { "keys": ["ctrl+delete"], "command": "delete_to_beg_of_contig_boundary", "args": {"forward": true} },

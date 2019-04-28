@@ -300,19 +300,23 @@ class ExpandSelectionToWhitespaceCommand(sublime_plugin.TextCommand):
 			# 	view.sel().add(sublime.Region(thisRegionBegin, thisRegionBegin))
 
 #---------------------------------------------------------------
-class homeendbeginningCommand(sublime_plugin.TextCommand):
+class KnLinelimitCommand(sublime_plugin.TextCommand):
 	def run(self, edit, forward):
 		view = self.view
 		for thisregion in view.sel():
 			if(forward): #forward
+				thisRegionEnd = view.line(thisregion).end()
 				view.sel().clear()
-				view.sel().add(view.line(thisregion).end())
+				view.sel().add(thisRegionEnd)
+				view.show(thisRegionEnd)
 			else: #backward
+				thisRegionEnd = view.line(thisregion).begin()
 				view.sel().clear()
-				view.sel().add(view.line(thisregion).begin())
+				view.sel().add(thisRegionEnd)
+				view.show(thisRegionEnd)
 
 #---------------------------------------------------------------
-class indentblanklineCommand(sublime_plugin.TextCommand):
+class KnIndentCommand(sublime_plugin.TextCommand):
 	def run(self, edit, forward):
 		view = self.view
 		for thisregion in view.sel():
@@ -323,12 +327,18 @@ class indentblanklineCommand(sublime_plugin.TextCommand):
 			listlines = mycontent.splitlines(True)
 			numlines = len(listlines)
 			listlinesnew = list()			
-			if(forward): #forward
+			if((numlines == 0) and forward):
+				view.replace(edit, thisregionlines, chr(9))
+				view.sel().clear()
+				view.sel().add(sublime.Region(thisregion.begin()+1))
+				view.show(thisregion.begin()+1)
+			elif(forward): #forward
 				for thisline in listlines:
 					listlinesnew.append(chr(9)+thisline)
 				view.replace(edit, thisregionlines, ''.join(listlinesnew))
 				view.sel().clear()
 				view.sel().add(sublime.Region(thisregion.begin()+1, thisregion.end()+numlines))
+				view.show(thisregion.begin()+1)
 			else: #backward
 				for thisline in listlines:
 					if(thisline[0] == chr(9)):
@@ -336,6 +346,7 @@ class indentblanklineCommand(sublime_plugin.TextCommand):
 					else:
 						listlinesnew.append(thisline)
 				view.replace(edit, thisregionlines, ''.join(listlinesnew))
+				view.show(thisregion.begin()-1)
 				# not needed to rebuild the selection
 				# view.sel().clear()
 				# view.sel().add(sublime.Region(thisregion.begin()-1, thisregion.end()-numlines))
