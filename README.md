@@ -31,12 +31,13 @@ Sample Keybindings:
 * <kbd>ctrl+delete</kbd> delete to next contiguous boundary demarcated by a whitespace
 * <kbd>alt+backspace</kbd> delete(backspace) to previous subword boundary delineated by ", ., +, _, <, >, [, ], {, }, -, (, )
 * <kbd>alt+delete</kbd> delete to next subword boundary delineated by ", ., +, _, <, >, [, ], {, }, -, (, )
-* <kbd>ctrl+d</kbd> delete line with linebreak
-* <kbd>ctrl+alt+d</kbd> delete line without linebreak
+* <kbd>ctrl+o</kbd> delete line with linebreak
+* <kbd>ctrl+alt+o</kbd> delete line without linebreak
 * <kbd>ctrl+v</kbd> paste (differs from innate in that does not put a newline above when copy used from nonselection line)
 * <kbd>ctrl+alt+v</kbd> paste with newline above
 * <kbd>ctrl+alt+down</kbd> swap line down with up (native)
 * <kbd>ctrl+alt+up</kbd> swap line up with down (native)
+* <kbd>ctrl+d</kbd> duplicate line below (even allows for multi line on)
 * <kbd>ctrl+alt+left</kbd> create new line below and go to it
 * <kbd>ctrl+alt+right</kbd> create new line above and go to it
 * <kbd>ctrl+alt+-</kbd> indent less (to the left)
@@ -75,14 +76,15 @@ For Windows, you can use the recommended sample keybindings by adding the follow
 { "keys": ["alt+backspace"], "command": "delete_to_beg_of_subword_boundary", "args": {"forward": false} },
 { "keys": ["alt+delete"], "command": "delete_to_beg_of_subword_boundary", "args": {"forward": true} },
 
-{ "keys": ["ctrl+d"], "command": "delete_line" },
-{ "keys": ["ctrl+alt+d"], "command": "delete_line_wo_linebreak" },
+{ "keys": ["ctrl+o"], "command": "delete_line" },
+{ "keys": ["ctrl+alt+o"], "command": "delete_line_wo_linebreak" },
 
 { "keys": ["ctrl+v"], "command": "kn_paste" },
 { "keys": ["ctrl+alt+v"], "command": "paste_into_lines" },
 
 { "keys": ["ctrl+alt+up"], "command": "swap_line_up" },
 { "keys": ["ctrl+alt+down"], "command": "swap_line_down" },
+{ "keys": ["ctrl+d"], "command": "duplicate_line_below" },
 { "keys": ["ctrl+alt+left"], "command": "newline_below", "args": {"forward": false} },
 { "keys": ["ctrl+alt+right"], "command": "newline_below", "args": {"forward": true} },
 

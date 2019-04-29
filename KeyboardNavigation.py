@@ -398,6 +398,13 @@ class PasteIntoLinesCommand(sublime_plugin.TextCommand):
 				view.show(thisregion.a + len(sublimeclipboard) + 1)
 
 #---------------------------------------------------------------
+class DuplicateLineBelowCommand(sublime_plugin.TextCommand):
+	def run(self, edit):
+		view = self.view
+		view.run_command("expand_selection", {"to": "line"} )
+		view.run_command("duplicate_line")
+
+#---------------------------------------------------------------
 class NewlineBelowCommand(sublime_plugin.TextCommand):
 	def run(self, edit, forward):
 		view = self.view
