@@ -227,8 +227,8 @@ class SelectToKnLinelimitCommand(sublime_plugin.TextCommand):
 				view.sel().add(sublime.Region(thisregion.a, thisRegionEnd))
 				view.show(thisRegionEnd)
 			else: #backward
-				view.sel().clear()
 				thisRegionEnd = view.line(thisregion).begin()
+				view.sel().clear()
 				view.sel().add(sublime.Region(thisregion.a, thisRegionEnd))
 				view.show(thisRegionEnd)	
 
@@ -365,6 +365,37 @@ class KnIndentCommand(sublime_plugin.TextCommand):
 				# not needed to rebuild the selection
 				# view.sel().clear()
 				# view.sel().add(sublime.Region(thisregion.begin()-1, thisregion.end()-numlines))
+
+#---------------------------------------------------------------
+class KnPasteCommand(sublime_plugin.TextCommand):
+	def run(self, edit):
+		view = self.view
+		for thisregion in view.sel():
+			# thisregionlines = view.full_line(thisregion)
+			# thisregionlinesBeginning = thisregionlines.begin()
+			# view.run_command('paste');
+			sublimeclipboard = sublime.get_clipboard()
+			if(thisregion.a != thisregion.b):
+				view.replace(edit, thisregion, sublimeclipboard)
+			else:
+				view.insert(edit, thisregion.a, sublimeclipboard)
+				view.show(thisregion.a + len(sublimeclipboard) + 1)
+
+#---------------------------------------------------------------
+class PasteIntoLinesCommand(sublime_plugin.TextCommand):
+	def run(self, edit):
+		view = self.view
+		for thisregion in view.sel():
+			thisregionlines = view.full_line(thisregion)
+			thisregionlinesBeginning = thisregionlines.begin()
+			sublimeclipboard = sublime.get_clipboard()
+			if(sublimeclipboard[-1:] != chr(10)):
+				sublime.status_message("PasteIntoLines: There is not newlines ending content in clipboard, adding newline after")
+				view.insert(edit, thisregionlinesBeginning, sublime.get_clipboard() + chr(10))
+				view.show(thisregion.a + len(sublimeclipboard) + 1)
+			else:
+				view.insert(edit, thisregionlinesBeginning, sublime.get_clipboard())
+				view.show(thisregion.a + len(sublimeclipboard) + 1)
 
 #---------------------------------------------------------------
 class DeleteToBegOfContigBoundaryCommand(sublime_plugin.TextCommand):

@@ -33,6 +33,8 @@ Sample Keybindings:
 * <kbd>alt+delete</kbd> delete to next subword boundary delineated by ", ., +, _, <, >, [, ], {, }, -, (, )
 * <kbd>ctrl+d</kbd> delete line with linebreak
 * <kbd>ctrl+alt+d</kbd> delete line without linebreak
+* <kbd>ctrl+v</kbd> paste (differs from innate in that does not put a newline above when copy used from nonselection line)
+* <kbd>ctrl+alt+v</kbd> paste with newline above
 * <kbd>ctrl+alt+-</kbd> indent less (to the left)
 * <kbd>ctrl+alt+=</kbd> indent more (to the right) (even works with blank line which the native one does not)
 
@@ -71,6 +73,9 @@ For Windows, you can use the recommended sample keybindings by adding the follow
 
 { "keys": ["ctrl+d"], "command": "delete_line" },
 { "keys": ["ctrl+alt+d"], "command": "delete_line_wo_linebreak" },
+
+{ "keys": ["ctrl+v"], "command": "kn_paste" },
+{ "keys": ["ctrl+alt+v"], "command": "paste_into_lines" },
 
 { "keys": ["ctrl+alt+-"], "command": "kn_indent", "args": {"forward": false} },
 { "keys": ["ctrl+alt+="], "command": "kn_indent", "args": {"forward": true} }
