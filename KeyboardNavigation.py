@@ -398,6 +398,23 @@ class PasteIntoLinesCommand(sublime_plugin.TextCommand):
 				view.show(thisregion.a + len(sublimeclipboard) + 1)
 
 #---------------------------------------------------------------
+class NewlineBelowCommand(sublime_plugin.TextCommand):
+	def run(self, edit, forward):
+		view = self.view
+		RegionsSelOld = list(view.sel())
+		view.sel().clear()
+		for thisregion in RegionsSelOld:
+			if(forward): #forward
+				posToInsertLineAt = view.full_line(thisregion).b
+				print(posToInsertLineAt)
+				view.insert(edit, posToInsertLineAt, chr(10))
+				view.sel().add(sublime.Region(posToInsertLineAt))
+			else: #backward
+				posToInsertLineAt = view.full_line(thisregion).a-1
+				view.insert(edit, posToInsertLineAt+1, chr(10))
+				view.sel().add(sublime.Region(posToInsertLineAt))
+
+#---------------------------------------------------------------
 class DeleteToBegOfContigBoundaryCommand(sublime_plugin.TextCommand):
 	def run(self, edit, forward):
 		view = self.view

@@ -35,13 +35,17 @@ Sample Keybindings:
 * <kbd>ctrl+alt+d</kbd> delete line without linebreak
 * <kbd>ctrl+v</kbd> paste (differs from innate in that does not put a newline above when copy used from nonselection line)
 * <kbd>ctrl+alt+v</kbd> paste with newline above
+* <kbd>ctrl+alt+down</kbd> swap line down with up (native)
+* <kbd>ctrl+alt+up</kbd> swap line up with down (native)
+* <kbd>ctrl+alt+left</kbd> create new line below and go to it
+* <kbd>ctrl+alt+right</kbd> create new line above and go to it
 * <kbd>ctrl+alt+-</kbd> indent less (to the left)
 * <kbd>ctrl+alt+=</kbd> indent more (to the right) (even works with blank line which the native one does not)
 
 ## Key Bindings Configuration
 Since these are redefining / replacing your very basic navigational keys, the package does not automatically overwrite your existing key bindings. You must choose to add the keybindings yourself specific to your OS.
 
-For Windows, you can use the recommended sample keybindings by adding the following lines to [Sublime_Data_Dir]\User\Default (Windows).sublime-keymap
+For Windows, you can use the recommended sample keybindings by adding the following lines to [Sublime_Data_Dir](http://docs.sublimetext.info/en/latest/basic_concepts.html#the-data-directory)\Packages\User\Default (Windows).sublime-keymap
 ```
 { "keys": ["ctrl+left"], "command": "move_to_beg_of_contig_boundary", "args": {"forward": false} },
 { "keys": ["ctrl+right"], "command": "move_to_beg_of_contig_boundary", "args": {"forward": true} },
@@ -77,6 +81,11 @@ For Windows, you can use the recommended sample keybindings by adding the follow
 { "keys": ["ctrl+v"], "command": "kn_paste" },
 { "keys": ["ctrl+alt+v"], "command": "paste_into_lines" },
 
+{ "keys": ["ctrl+alt+up"], "command": "swap_line_up" },
+{ "keys": ["ctrl+alt+down"], "command": "swap_line_down" },
+{ "keys": ["ctrl+alt+left"], "command": "newline_below", "args": {"forward": false} },
+{ "keys": ["ctrl+alt+right"], "command": "newline_below", "args": {"forward": true} },
+
 { "keys": ["ctrl+alt+-"], "command": "kn_indent", "args": {"forward": false} },
 { "keys": ["ctrl+alt+="], "command": "kn_indent", "args": {"forward": true} }
 ```
@@ -93,6 +102,5 @@ Press b (“BACK”) to move the cursor to the left one word at a time.
 Press W (“word”) to move the cursor to the right one word at a time. (words can contain punctuation)
 Press B (“back”) to move the cursor to the left one word at a time. (words can contain punctuation)
 ```
-I found that Sublime's move "words" and "words_ends" keybindings of vim's "b" and "w" emulation mode still stop at some punctuation characters even if you make "word_separators" blank.
 
 KeyboardNavigation allows vim "w" and "b" like movement fastly through contiguous boundaries.
