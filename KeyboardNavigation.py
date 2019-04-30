@@ -335,22 +335,20 @@ class KnIndentCommand(sublime_plugin.TextCommand):
 	def run(self, edit, forward):
 		view = self.view
 		for thisregion in view.sel():
-			# theselines = view.lines(thisregion)
-			# theselines2 = view.split_by_newlines(view.line(thisregion))
-			thisregionlines = view.full_line(thisregion)
-			mycontent = view.substr(thisregionlines)
+			thisregionfullline = view.full_line(thisregion)
+			mycontent = view.substr(thisregionfullline)
 			listlines = mycontent.splitlines(True)
 			numlines = len(listlines)
 			listlinesnew = list()			
 			if((numlines == 0) and forward):
-				view.replace(edit, thisregionlines, chr(9))
+				view.replace(edit, thisregionfullline, chr(9))
 				view.sel().clear()
 				view.sel().add(sublime.Region(thisregion.begin()+1))
 				view.show(thisregion.begin()+1)
 			elif(forward): #forward
 				for thisline in listlines:
 					listlinesnew.append(chr(9)+thisline)
-				view.replace(edit, thisregionlines, ''.join(listlinesnew))
+				view.replace(edit, thisregionfullline, ''.join(listlinesnew))
 				view.sel().clear()
 				view.sel().add(sublime.Region(thisregion.begin()+1, thisregion.end()+numlines))
 				view.show(thisregion.begin()+1)
@@ -360,7 +358,7 @@ class KnIndentCommand(sublime_plugin.TextCommand):
 						listlinesnew.append(thisline[1:])
 					else:
 						listlinesnew.append(thisline)
-				view.replace(edit, thisregionlines, ''.join(listlinesnew))
+				view.replace(edit, thisregionfullline, ''.join(listlinesnew))
 				view.show(thisregion.begin()-1)
 				# not needed to rebuild the selection
 				# view.sel().clear()
@@ -371,8 +369,6 @@ class KnPasteCommand(sublime_plugin.TextCommand):
 	def run(self, edit):
 		view = self.view
 		for thisregion in view.sel():
-			# thisregionlines = view.full_line(thisregion)
-			# thisregionlinesBeginning = thisregionlines.begin()
 			# view.run_command('paste');
 			sublimeclipboard = sublime.get_clipboard()
 			if(thisregion.a != thisregion.b):
@@ -386,26 +382,29 @@ class PasteIntoLinesCommand(sublime_plugin.TextCommand):
 	def run(self, edit):
 		view = self.view
 		for thisregion in view.sel():
-			thisregionlines = view.full_line(thisregion)
-			thisregionlinesBeginning = thisregionlines.begin()
+			thisregionfullline = view.full_line(thisregion)
+			thisregionfulllineBeginning = thisregionfullline.begin()
 			sublimeclipboard = sublime.get_clipboard()
 			if(sublimeclipboard[-1:] != chr(10)):
 				sublime.status_message("PasteIntoLines: There is not newlines ending content in clipboard, adding newline after")
-				view.insert(edit, thisregionlinesBeginning, sublime.get_clipboard() + chr(10))
+				view.insert(edit, thisregionfulllineBeginning, sublime.get_clipboard() + chr(10))
 				view.show(thisregion.a + len(sublimeclipboard) + 1)
 			else:
-				view.insert(edit, thisregionlinesBeginning, sublime.get_clipboard())
+				view.insert(edit, thisregionfulllineBeginning, sublime.get_clipboard())
 				view.show(thisregion.a + len(sublimeclipboard) + 1)
 
 #---------------------------------------------------------------
-class DuplicateLineBelowCommand(sublime_plugin.TextCommand):
+# duplicates line above (instead of below like innate one)
+class KnDuplicateLineCommand(sublime_plugin.TextCommand):
 	def run(self, edit):
 		view = self.view
-		view.run_command("expand_selection", {"to": "line"} )
-		view.run_command("duplicate_line")
+		for numthisregion, thisregion in enumerate(view.sel()):
+			thisregionfullline = view.full_line(thisregion)
+			view.insert(edit, thisregionfullline.a, view.substr(thisregionfullline))
+		# view.show(thisregionfullline.a) # not needed
 
 #---------------------------------------------------------------
-class NewlineBelowCommand(sublime_plugin.TextCommand):
+class BlanklineAddCommand(sublime_plugin.TextCommand):
 	def run(self, edit, forward):
 		view = self.view
 		RegionsSelOld = list(view.sel())
@@ -419,7 +418,7 @@ class NewlineBelowCommand(sublime_plugin.TextCommand):
 			else: #backward
 				posToInsertLineAt = view.full_line(thisregion).a-1
 				view.insert(edit, posToInsertLineAt+1, chr(10))
-				view.sel().add(sublime.Region(posToInsertLineAt))
+				view.sel().add(sublime.Region(posToInsertLineAt+1))
 
 #---------------------------------------------------------------
 class DeleteToBegOfContigBoundaryCommand(sublime_plugin.TextCommand):

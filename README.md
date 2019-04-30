@@ -37,9 +37,9 @@ Sample Keybindings:
 * <kbd>ctrl+alt+v</kbd> paste with newline above
 * <kbd>ctrl+alt+down</kbd> swap line down with up (native)
 * <kbd>ctrl+alt+up</kbd> swap line up with down (native)
-* <kbd>ctrl+d</kbd> duplicate line below (even allows for multi line on)
-* <kbd>ctrl+alt+left</kbd> create new line below and go to it
-* <kbd>ctrl+alt+right</kbd> create new line above and go to it
+* <kbd>ctrl+d</kbd> duplicate line above (instead of below like innate one)
+* <kbd>ctrl+alt+left</kbd> blank line above and be there
+* <kbd>ctrl+alt+right</kbd> blank line below and be there
 * <kbd>ctrl+alt+-</kbd> indent less (to the left)
 * <kbd>ctrl+alt+=</kbd> indent more (to the right) (even works with blank line which the native one does not)
 
@@ -84,9 +84,9 @@ For Windows, you can use the recommended sample keybindings by adding the follow
 
 { "keys": ["ctrl+alt+up"], "command": "swap_line_up" },
 { "keys": ["ctrl+alt+down"], "command": "swap_line_down" },
-{ "keys": ["ctrl+d"], "command": "duplicate_line_below" },
-{ "keys": ["ctrl+alt+left"], "command": "newline_below", "args": {"forward": false} },
-{ "keys": ["ctrl+alt+right"], "command": "newline_below", "args": {"forward": true} },
+{ "keys": ["ctrl+d"], "command": "kn_duplicate_line" },
+{ "keys": ["ctrl+alt+left"], "command": "blankline_add", "args": {"forward": false} },
+{ "keys": ["ctrl+alt+right"], "command": "blankline_add", "args": {"forward": true} },
 
 { "keys": ["ctrl+alt+-"], "command": "kn_indent", "args": {"forward": false} },
 { "keys": ["ctrl+alt+="], "command": "kn_indent", "args": {"forward": true} }
