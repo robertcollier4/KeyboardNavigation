@@ -365,6 +365,24 @@ class KnIndentCommand(sublime_plugin.TextCommand):
 				# view.sel().add(sublime.Region(thisregion.begin()-1, thisregion.end()-numlines))
 
 #---------------------------------------------------------------
+class CopyFulllinesCommand(sublime_plugin.TextCommand):
+	def run(self, edit):
+		view = self.view
+		for thisregion in view.sel():
+			thisregionfullline = view.full_line(thisregion)
+			sublime.set_clipboard(view.substr(thisregionfullline))
+
+#---------------------------------------------------------------
+#---------------------------------------------------------------
+class CutFulllinesCommand(sublime_plugin.TextCommand):
+	def run(self, edit):
+		view = self.view
+		for thisregion in view.sel():
+			thisregionfullline = view.full_line(thisregion)
+			sublime.set_clipboard(view.substr(thisregionfullline))
+			self.view.erase(edit, thisregionfullline)
+
+#---------------------------------------------------------------
 class KnPasteCommand(sublime_plugin.TextCommand):
 	def run(self, edit):
 		view = self.view

@@ -33,6 +33,8 @@ Sample Keybindings:
 * <kbd>alt+delete</kbd> delete to next subword boundary delineated by ", ., +, _, <, >, [, ], {, }, -, (, )
 * <kbd>ctrl+o</kbd> delete line with linebreak
 * <kbd>ctrl+alt+o</kbd> delete line without linebreak
+* <kbd>ctrl+shift+c</kbd> copy full lines
+* <kbd>ctrl+shift+x</kbd> cut full lines
 * <kbd>ctrl+v</kbd> paste (differs from innate in that does not put a newline above when copy used from nonselection line)
 * <kbd>ctrl+alt+v</kbd> paste with newline above
 * <kbd>ctrl+alt+down</kbd> swap line down with up (native)
@@ -79,6 +81,8 @@ For Windows, you can use the recommended sample keybindings by adding the follow
 { "keys": ["ctrl+o"], "command": "delete_line" },
 { "keys": ["ctrl+alt+o"], "command": "delete_line_wo_linebreak" },
 
+{ "keys": ["ctrl+shift+c"], "command": "copy_fulllines" },
+{ "keys": ["ctrl+shift+x"], "command": "cut_fulllines" },
 { "keys": ["ctrl+v"], "command": "kn_paste" },
 { "keys": ["ctrl+alt+v"], "command": "paste_into_lines" },
 
