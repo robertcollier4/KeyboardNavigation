@@ -370,17 +370,24 @@ class CopyFulllinesCommand(sublime_plugin.TextCommand):
 		view = self.view
 		for thisregion in view.sel():
 			thisregionfullline = view.full_line(thisregion)
-			sublime.set_clipboard(view.substr(thisregionfullline))
+			strthisregionfullline = view.substr(thisregionfullline)
+			if( (strthisregionfullline[-1] == chr(10)) or (strthisregionfullline[-1] == chr(13)) ):
+				sublime.set_clipboard(strthisregionfullline)
+			else: # this line does not end in newline even though full_line was used - this means its the last line the document, so add a newline for it
+				sublime.set_clipboard(strthisregionfullline + chr(10))
 
-#---------------------------------------------------------------
-#---------------------------------------------------------------
 class CutFulllinesCommand(sublime_plugin.TextCommand):
 	def run(self, edit):
 		view = self.view
 		for thisregion in view.sel():
 			thisregionfullline = view.full_line(thisregion)
-			sublime.set_clipboard(view.substr(thisregionfullline))
-			self.view.erase(edit, thisregionfullline)
+			strthisregionfullline = view.substr(thisregionfullline)
+			if( (strthisregionfullline[-1] == chr(10)) or (strthisregionfullline[-1] == chr(13)) ):
+				sublime.set_clipboard(strthisregionfullline)
+				self.view.erase(edit, thisregionfullline)
+			else: # this line does not end in newline even though full_line was used - this means its the last line the document, so add a newline for it
+				sublime.set_clipboard(strthisregionfullline + chr(10))
+				self.view.erase(edit, thisregionfullline)
 
 #---------------------------------------------------------------
 class KnPasteCommand(sublime_plugin.TextCommand):

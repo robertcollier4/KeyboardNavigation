@@ -60,7 +60,7 @@ For Windows, you can use the recommended sample keybindings by adding the follow
 
 { "keys": ["ctrl+shift+left"], "command": "select_to_beg_of_contig_boundary", "args": {"forward": false} },
 { "keys": ["ctrl+shift+right"], "command": "select_to_beg_of_contig_boundary", "args": {"forward": true} },
-{ "keys": ["alt+shift+left"], "command": select_to_beg_of_subword_boundary "args": {"forward": false} },
+{ "keys": ["alt+shift+left"], "command": "select_to_beg_of_subword_boundary", "args": {"forward": false} },
 { "keys": ["alt+shift+right"], "command": "select_to_beg_of_subword_boundary", "args": {"forward": true} },
 
 { "keys": ["shift+home"], "command": "select_to_kn_linelimit", "args": {"forward": false} },
@@ -71,7 +71,7 @@ For Windows, you can use the recommended sample keybindings by adding the follow
 { "keys": ["ctrl+shift+q"], "command": "expand_selection_to_quotes"},
 { "keys": ["ctrl+shift+b"], "command": "expand_selection_to_brackets"},
 { "keys": ["ctrl+shift+l"], "command": "select_line" },
-{ "keys": ["ctrl+alt+shift+l"], "command": select_line_wo_linebreak },
+{ "keys": ["ctrl+alt+shift+l"], "command": "select_line_wo_linebreak" },
 
 { "keys": ["ctrl+backspace"], "command": "delete_to_beg_of_contig_boundary", "args": {"forward": false} },
 { "keys": ["ctrl+delete"], "command": "delete_to_beg_of_contig_boundary", "args": {"forward": true} },
