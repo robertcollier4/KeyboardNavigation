@@ -25,9 +25,9 @@ class MoveToBegOfContigBoundaryCommand(sublime_plugin.TextCommand):
 			else: #backward
 				thisRegionBegin = thisregion.a
 				thisRegionEnd = thisregion.b-1
-				while ((view.substr(thisRegionEnd) in spaceChars) and (thisRegionEnd >= -1)):
+				while ((view.substr(thisRegionEnd) in spaceChars) and (thisRegionEnd >= 0)):
 					thisRegionEnd -= 1
-				while ((view.substr(thisRegionEnd) not in whiteChars) and (thisRegionEnd >= -1)):
+				while ((view.substr(thisRegionEnd) not in whiteChars) and (thisRegionEnd >= 0)):
 					thisRegionEnd -= 1
 				if(thisRegionEnd+1 == thisregion.b):
 					thisRegionEnd -= 1
@@ -87,9 +87,9 @@ class SelectToBegOfContigBoundaryCommand(sublime_plugin.TextCommand):
 				else: #backward
 					thisRegionBegin = thisregion.a
 					thisRegionEnd = thisregion.b-1
-					while ((view.substr(thisRegionEnd) in spaceChars) and (thisRegionEnd >= -1)):
+					while ((view.substr(thisRegionEnd) in spaceChars) and (thisRegionEnd >= 0)):
 						thisRegionEnd -= 1
-					while ((view.substr(thisRegionEnd) not in whiteChars) and (thisRegionEnd >= -1)):
+					while ((view.substr(thisRegionEnd) not in whiteChars) and (thisRegionEnd >= 0)):
 						thisRegionEnd -= 1
 					if(thisRegionEnd+1 == thisregion.b):
 						thisRegionEnd += 1					
@@ -112,9 +112,9 @@ class SelectToBegOfContigBoundaryCommand(sublime_plugin.TextCommand):
 				else: #backward
 					thisRegionBegin = thisregion.a
 					thisRegionEnd = thisregion.b-1
-					while ((view.substr(thisRegionEnd) in spaceChars) and (thisRegionEnd > thisRegionBegin-1) and (thisRegionEnd >= -1)):
+					while ((view.substr(thisRegionEnd) in spaceChars) and (thisRegionEnd > thisRegionBegin-1) and (thisRegionEnd >= 0)):
 						thisRegionEnd -= 1
-					while ((view.substr(thisRegionEnd) not in whiteChars) and (thisRegionEnd > thisRegionBegin-1) and (thisRegionEnd >= -1)):
+					while ((view.substr(thisRegionEnd) not in whiteChars) and (thisRegionEnd > thisRegionBegin-1) and (thisRegionEnd >= 0)):
 						thisRegionEnd -= 1
 					if(thisRegionEnd+1 == thisregion.b):
 						thisRegionEnd -= 1
@@ -137,9 +137,9 @@ class SelectToBegOfContigBoundaryCommand(sublime_plugin.TextCommand):
 				else: #backward
 					thisRegionBegin = thisregion.a
 					thisRegionEnd = thisregion.b-1
-					while ((view.substr(thisRegionEnd) in spaceChars) and (thisRegionEnd >= -1)):
+					while ((view.substr(thisRegionEnd) in spaceChars) and (thisRegionEnd >= 0)):
 						thisRegionEnd -= 1
-					while ((view.substr(thisRegionEnd) not in whiteChars) and (thisRegionEnd >= -1)):
+					while ((view.substr(thisRegionEnd) not in whiteChars) and (thisRegionEnd >= 0)):
 						thisRegionEnd -= 1
 					if(thisRegionEnd+1 == thisregion.b):
 						thisRegionEnd -= 1
@@ -463,9 +463,9 @@ class DeleteToBegOfContigBoundaryCommand(sublime_plugin.TextCommand):
 			else: #backward
 				thisRegionBegin = thisregion.a
 				thisRegionEnd = thisregion.b-1
-				while ((view.substr(thisRegionEnd) in spaceChars) and (thisRegionEnd >= -1)):
+				while ((view.substr(thisRegionEnd) in spaceChars) and (thisRegionEnd >= 0)):
 					thisRegionEnd -= 1
-				while ((view.substr(thisRegionEnd) not in whiteChars) and (thisRegionEnd >= -1)):
+				while ((view.substr(thisRegionEnd) not in whiteChars) and (thisRegionEnd >= 0)):
 					thisRegionEnd -= 1
 				if(thisRegionEnd+1 == thisregion.b):
 					thisRegionEnd -= 1
