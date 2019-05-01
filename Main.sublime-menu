@@ -1,0 +1,63 @@
+//---------------------------------------------------------------
+// MENU FILE
+//---------------------------------------------------------------
+[
+
+	//---------------------------------------------------------------
+	{
+		"caption": "KeyboardNavigation",
+		"mnemonic": "K",
+		"id": "KeyboardNavigation",
+		"children":
+		[
+		{ "caption": "-"},
+		{ "caption": "Move To Beg Of Prev Contig Boundary", "command": "move_to_beg_of_contig_boundary", "args": {"forward": false} },
+		{ "caption": "Move To Beg Of Next Contig Boundary", "command": "move_to_beg_of_contig_boundary", "args": {"forward": true} },
+		{ "caption": "Move To Beg Of Prev Subword Boundary", "command": "move_to_beg_of_subword_boundary", "args": {"forward": false} },
+		{ "caption": "Move To Beg Of Next Subword Boundary", "command": "move_to_beg_of_subword_boundary", "args": {"forward": true} },
+		
+		{ "caption": "Left Linelimit", "command": "kn_linelimit", "args": {"forward": false} },
+		{ "caption": "Right Linelimit", "command": "kn_linelimit", "args": {"forward": true} },
+		
+		{ "caption": "Select To Beg Of Prev Contig Boundary", "command": "select_to_beg_of_contig_boundary", "args": {"forward": false} },
+		{ "caption": "Select To Beg Of Next Contig Boundary", "command": "select_to_beg_of_contig_boundary", "args": {"forward": true} },
+		{ "caption": "Select To Beg Of Prev Contig Boundary", "command": "select_to_beg_of_subword_boundary", "args": {"forward": false} },
+		{ "caption": "Select To Next Beg Of Subword Boundary", "command": "select_to_beg_of_subword_boundary", "args": {"forward": true} },
+		
+		{ "caption": "Select To Left Linelimit", "command": "select_to_kn_linelimit", "args": {"forward": false} },
+		{ "caption": "Select To Right Linelimit", "command": "select_to_kn_linelimit", "args": {"forward": true} },
+		
+		{ "caption": "Expand Selection To Whitespace", "command": "expand_selection_to_whitespace" },
+		{ "caption": "Expand Selection To Delims", "command": "expand_selection_to_delims" },
+		{ "caption": "Expand Selection To Quotes", "command": "expand_selection_to_quotes"},
+		{ "caption": "Expand Selection To Brackets", "command": "expand_selection_to_brackets"},
+		{ "caption": "Select Line", "command": "select_line" },
+		{ "caption": "Select Line Wo Linebreak", "command": "select_line_wo_linebreak" },
+		
+		{ "caption": "Erase Back(Backspace) To Beg Of Contig Boundary", "command": "delete_to_beg_of_contig_boundary", "args": {"forward": false} },
+		{ "caption": "Erase Forward(Delete) To Beg Of Contig Boundary", "command": "delete_to_beg_of_contig_boundary", "args": {"forward": true} },
+		{ "caption": "Erase Back(Backspace) To Beg Of Subword Boundary", "command": "delete_to_beg_of_subword_boundary", "args": {"forward": false} },
+		{ "caption": "Erase Forward(Delete) To Beg Of Subword Boundary", "command": "delete_to_beg_of_subword_boundary", "args": {"forward": true} },
+		
+		{ "caption": "Erase Line W Linebreak", "command": "delete_line" },
+		{ "caption": "Erase Line Wo Linebreak", "command": "delete_line_wo_linebreak" },
+		
+		{ "caption": "Copy Fulllines", "command": "copy_fulllines" },
+		{ "caption": "Cut Fulllines", "command": "cut_fulllines" },
+		{ "caption": "Kn Paste", "command": "kn_paste" },
+		{ "caption": "Kn Paste Into Lines", "command": "paste_into_lines" },
+		
+		{ "caption": "Swap Line Up", "command": "swap_line_up" },
+		{ "caption": "Swap Line Down", "command": "swap_line_down" },
+		{ "caption": "Duplicate Line", "command": "kn_duplicate_line" },
+		{ "caption": "Blankline Above and Go", "command": "blankline_add", "args": {"forward": false} },
+		{ "caption": "Blankline Below and Go", "command": "blankline_add", "args": {"forward": true} },
+		
+		{ "caption": "Indent Less (Left)", "command": "kn_indent", "args": {"forward": false} },
+		{ "caption": "Indent More (Right)", "command": "kn_indent", "args": {"forward": true} },
+		{ "caption": "-"},
+		]
+	},
+	//---------------------------------------------------------------
+
+]
