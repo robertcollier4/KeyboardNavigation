@@ -425,7 +425,10 @@ class KnDuplicateLineCommand(sublime_plugin.TextCommand):
 		view = self.view
 		for numthisregion, thisregion in enumerate(view.sel()):
 			thisregionfullline = view.full_line(thisregion)
-			view.insert(edit, thisregionfullline.a, view.substr(thisregionfullline))
+			if(view.substr(thisregionfullline)[-1:] != chr(10)):
+				view.insert(edit, thisregionfullline.begin(), view.substr(thisregionfullline) + chr(10))
+			else:
+				view.insert(edit, thisregionfullline.begin(), view.substr(thisregionfullline))
 		# view.show(thisregionfullline.a) # not needed
 
 #---------------------------------------------------------------
