@@ -92,7 +92,7 @@ class SelectToBegOfContigBoundaryCommand(sublime_plugin.TextCommand):
 					while((view.substr(thisRegionEnd) not in whiteChars) and (thisRegionEnd >= 0)):
 						thisRegionEnd -= 1
 					if((thisRegionEnd >= 0) and (thisRegionEnd+1 == thisregion.b)):
-						thisRegionEnd += 1					
+						thisRegionEnd -= 1					
 					view.sel().clear()
 					view.sel().add(sublime.Region(thisRegionBegin, thisRegionEnd+1))
 					view.show(thisRegionEnd)
