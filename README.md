@@ -11,26 +11,26 @@ This is like mode in vim of move word to word of "w" and "b" and "W" and "B".
 Sample Keybindings:
 * <kbd>ctrl+left</kbd> move cursor to beginning of next contiguous boundary demarcated by a whitespace
 * <kbd>ctrl+right</kbd> move cursor to beginning of previous contiguous boundary demarcated by a whitespace
-* <kbd>alt+left</kbd> move cursor to beginning of previous subword boundary delineated by ", ', \, /, ., +, @, #, $, %, &, _, <, >, [, ], {, }, -, |, (, )
-* <kbd>alt+right</kbd> move cursor to beginning of next subword boundary delineated by ", ', \, /, ., +, @, #, $, %, &, _, <, >, [, ], {, }, -, |, (, )
+* <kbd>alt+left</kbd> move cursor to beginning of previous subword boundary delineated by (space), (tab), (newline), ", ', %, @, &, :, ?, (period), (comma), +, _, -, <, >, (, ), [, ], {, }, |, \
+* <kbd>alt+right</kbd> move cursor to beginning of next subword boundary delineated by (space), (tab), (newline), ", ', %, @, &, :, ?, (period), (comma), +, _, -, <, >, (, ), [, ], {, }, |, \
 * <kbd>home</kbd> move cursor to beginning of line limit (goes all the way to the beginning whereas the native one goes to beginning of indentation)
 * <kbd>end</kbd> move cursor to end of line limit
 * <kbd>ctrl+shift+left</kbd> select to beginning of next contiguous boundary demarcated by a whitespace
 * <kbd>ctrl+shift+right</kbd> select to beginning of previous contiguous boundary demarcated by a whitespace
-* <kbd>alt+shift+left</kbd> select to beginning of previous subword boundary delineated by ", ', \, /, ., +, @, #, $, %, &, _, <, >, [, ], {, }, -, |, (, )
-* <kbd>alt+shift+right</kbd> select to beginning of next subword boundary delineated by ", ', \, /, ., +, @, #, $, %, &, _, <, >, [, ], {, }, -, |, (, )
+* <kbd>alt+shift+left</kbd> select to beginning of previous subword boundary delineated by (space), (tab), (newline), ", ', %, @, &, :, ?, (period), (comma), +, _, -, <, >, (, ), [, ], {, }, |, \
+* <kbd>alt+shift+right</kbd> select to beginning of next subword boundary delineated by (space), (tab), (newline), ", ', %, @, &, :, ?, (period), (comma), +, _, -, <, >, (, ), [, ], {, }, |, \
 * <kbd>shift+home</kbd> select to beginning of line limit (goes all the way to the beginning whereas the native one goes to beginning of indentation)
 * <kbd>shift+end</kbd> select to end of line limit
 * <kbd>ctrl+shift+w</kbd> expand_selection_to_whitespace - expand selection to whitespace
-* <kbd>ctrl+shift+e</kbd> expand_selection_to_delims - expand selection to (space), (tab), (newline), ", ', %, @, &, :, (period), (comma), +, _, -, <, >, (, ), [, ], {, }, |, \
+* <kbd>ctrl+shift+e</kbd> expand_selection_to_delims - expand selection to (space), (tab), (newline), ", ', %, @, &, :, ?, (period), (comma), +, _, -, <, >, (, ), [, ], {, }, |, \
 * <kbd>ctrl+shift+q</kbd> expand_selection_to_quotes - expand selection to ", '
 * <kbd>ctrl+shift+b</kbd> expand_selection_to_brackets - expand selection to (, ), <, >, [, ], {, }
 * <kbd>ctrl+shift+l</kbd> select line with linebreak
 * <kbd>ctrl+alt+shift+l</kbd> select line without linebreak
 * <kbd>ctrl+backspace</kbd> delete(backspace) to previous contiguous boundary demarcated by a whitespace
 * <kbd>ctrl+delete</kbd> delete to next contiguous boundary demarcated by a whitespace
-* <kbd>alt+backspace</kbd> delete(backspace) to previous subword boundary delineated by ", ', \, /, ., +, @, #, $, %, &, _, <, >, [, ], {, }, -, |, (, )
-* <kbd>alt+delete</kbd> delete to next subword boundary delineated by ", ', \, /, ., +, @, #, $, %, &, _, <, >, [, ], {, }, -, |, (, )
+* <kbd>alt+backspace</kbd> delete(backspace) to previous subword boundary delineated by (space), (tab), (newline), ", ', %, @, &, :, ?, (period), (comma), +, _, -, <, >, (, ), [, ], {, }, |, \
+* <kbd>alt+delete</kbd> delete to next subword boundary delineated by (space), (tab), (newline), ", ', %, @, &, :, ?, (period), (comma), +, _, -, <, >, (, ), [, ], {, }, |, \
 * <kbd>ctrl+o</kbd> delete line with linebreak
 * <kbd>ctrl+alt+o</kbd> delete line without linebreak
 * <kbd>ctrl+shift+c</kbd> copy full lines
