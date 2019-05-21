@@ -45,7 +45,7 @@
 		{ "caption": "Copy Fulllines", "command": "copy_fulllines" },
 		{ "caption": "Cut Fulllines", "command": "cut_fulllines" },
 		{ "caption": "Kn Paste", "command": "kn_paste" },
-		{ "caption": "Kn Paste Into Lines", "command": "paste_into_lines" },
+		{ "caption": "Kn Paste Above", "command": "paste_above_lines" },
 		
 		{ "caption": "Swap Line Up", "command": "swap_line_up" },
 		{ "caption": "Swap Line Down", "command": "swap_line_down" },

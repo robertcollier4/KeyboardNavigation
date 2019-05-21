@@ -36,7 +36,7 @@ Sample Keybindings:
 * <kbd>ctrl+shift+c</kbd> copy full lines
 * <kbd>ctrl+shift+x</kbd> cut full lines
 * <kbd>ctrl+v</kbd> paste (differs from innate in that does not put a newline above when copy used from nonselection line)
-* <kbd>ctrl+alt+v</kbd> paste with newline above
+* <kbd>ctrl+alt+v</kbd> paste on the line above (with a newline if not already one on the clipboard)
 * <kbd>ctrl+alt+down</kbd> swap line down with up (native)
 * <kbd>ctrl+alt+up</kbd> swap line up with down (native)
 * <kbd>ctrl+d</kbd> duplicate line above (instead of below like innate one)
@@ -84,7 +84,7 @@ For Windows, you can use the recommended sample keybindings by adding the follow
 { "keys": ["ctrl+shift+c"], "command": "copy_fulllines" },
 { "keys": ["ctrl+shift+x"], "command": "cut_fulllines" },
 { "keys": ["ctrl+v"], "command": "kn_paste" },
-{ "keys": ["ctrl+alt+v"], "command": "paste_into_lines" },
+{ "keys": ["ctrl+alt+v"], "command": "paste_above_lines" },
 
 { "keys": ["ctrl+alt+up"], "command": "swap_line_up" },
 { "keys": ["ctrl+alt+down"], "command": "swap_line_down" },
@@ -103,10 +103,10 @@ For a paradigm of where this is implemented in vim -
 [https://vim.rtorr.com/](https://vim.rtorr.com/)  
 [https://forum.sublimetext.com/t/change-cursor-position-at-beginning-of-next-word-when-moving/21474](https://forum.sublimetext.com/t/change-cursor-position-at-beginning-of-next-word-when-moving/21474)
 ```
-Press w (“WORD”) to move the cursor to the right one word at a time.
-Press b (“BACK”) to move the cursor to the left one word at a time.
-Press W (“word”) to move the cursor to the right one word at a time. (words can contain punctuation)
-Press B (“back”) to move the cursor to the left one word at a time. (words can contain punctuation)
+Press w ("WORD") to move the cursor to the right one word at a time.
+Press b ("BACK") to move the cursor to the left one word at a time.
+Press W ("word") to move the cursor to the right one word at a time. (words can contain punctuation)
+Press B ("back") to move the cursor to the left one word at a time. (words can contain punctuation)
 ```
 
 KeyboardNavigation allows vim "w" and "b" like movement fastly through contiguous boundaries.
