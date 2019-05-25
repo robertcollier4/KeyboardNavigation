@@ -362,15 +362,22 @@ class KnIndentCommand(sublime_plugin.TextCommand):
 				view.sel().add(sublime.Region(ThisRegion.begin()+1, ThisRegion.end()+NumLines))
 				view.show(ThisRegion.begin()+1)
 			else: #backward
+				NumLines = 0
 				for ThisLine in ListLines:
 					if(ThisLine[0] == chr(9)):
+						NumLines += 1
 						ListLinesNew.append(ThisLine[1:])
 					else:
 						ListLinesNew.append(ThisLine)
 				view.replace(edit, ThisRegionFullline, ''.join(ListLinesNew))
-				view.show(ThisRegion.begin()-1)
-				view.sel().clear()
-				view.sel().add(sublime.Region(ThisRegion.begin()-1, ThisRegion.end()-NumLines))
+				if(NumLines == 0):
+					view.show(ThisRegion.begin())
+					view.sel().clear()
+					view.sel().add(sublime.Region(ThisRegion.begin(), ThisRegion.end()-NumLines))
+				else:
+					view.show(ThisRegion.begin()-1)
+					view.sel().clear()
+					view.sel().add(sublime.Region(ThisRegion.begin()-1, ThisRegion.end()-NumLines))
 
 #---------------------------------------------------------------
 class CopyFulllinesCommand(sublime_plugin.TextCommand):
@@ -389,14 +396,8 @@ class CutFulllinesCommand(sublime_plugin.TextCommand):
 		view = self.view
 		for ThisRegion in view.sel():
 			ThisRegionFullline = KnFullLine(view, ThisRegion)
-			strThisRegionFullline = view.substr(ThisRegionFullline)
-
-			if( (strThisRegionFullline[-1] == chr(10)) or (strThisRegionFullline[-1] == chr(13)) ):
-				sublime.set_clipboard(strThisRegionFullline)
-				self.view.erase(edit, ThisRegionFullline)
-			else: # there was no newline found at the end - this means it is the last line in the document, so add a newline for it
-				sublime.set_clipboard(strThisRegionFullline + chr(10))
-				self.view.erase(edit, ThisRegionFullline)
+			sublime.set_clipboard(view.substr(ThisRegionFullline))
+			self.view.erase(edit, ThisRegionFullline)
 
 #---------------------------------------------------------------
 class KnPasteCommand(sublime_plugin.TextCommand):
