@@ -345,39 +345,51 @@ class KnIndentCommand(sublime_plugin.TextCommand):
 		#view.sel().clear()
 		for ThisRegion in RegionsSelOld:
 			ThisRegionFullline = KnFullLine(view, ThisRegion)
-			MyContent = view.substr(ThisRegionFullline)
-			ListLines = MyContent.splitlines(True)
-			NumLines = len(ListLines)
-			ListLinesNew = list()			
+			StrContent = view.substr(ThisRegionFullline)
+			ListLinesStrContent = StrContent.splitlines(True)
+			NumLines = len(ListLinesStrContent)
+			ListLinesStrContentNew = list()			
 			if((NumLines == 0) and forward):
 				view.replace(edit, ThisRegionFullline, chr(9))
 				view.sel().clear()
 				view.sel().add(sublime.Region(ThisRegion.begin()+1))
 				view.show(ThisRegion.begin()+1)
 			elif(forward): #forward
-				for ThisLine in ListLines:
-					ListLinesNew.append(chr(9)+ThisLine)
-				view.replace(edit, ThisRegionFullline, ''.join(ListLinesNew))
+				for StrThisLine in ListLinesStrContent:
+					ListLinesStrContentNew.append(chr(9)+StrThisLine)
+				view.replace(edit, ThisRegionFullline, ''.join(ListLinesStrContentNew))
 				view.sel().clear()
 				view.sel().add(sublime.Region(ThisRegion.begin()+1, ThisRegion.end()+NumLines))
 				view.show(ThisRegion.begin()+1)
 			else: #backward
-				NumLines = 0
-				for ThisLine in ListLines:
-					if(ThisLine[0] == chr(9)):
-						NumLines += 1
-						ListLinesNew.append(ThisLine[1:])
+				NumLinesReplaced = 0
+				for StrThisLine in ListLinesStrContent:
+					if(StrThisLine[0] == chr(9)):
+						NumLinesReplaced += 1
+						ListLinesStrContentNew.append(StrThisLine[1:])
 					else:
-						ListLinesNew.append(ThisLine)
-				view.replace(edit, ThisRegionFullline, ''.join(ListLinesNew))
-				if(NumLines == 0):
+						ListLinesStrContentNew.append(StrThisLine)
+				if(NumLinesReplaced == 0):
+					#print("case lines none contain tabs at beginning")
+					pass
+				elif(ThisRegion.begin() == ThisRegionFullline.begin()):
+					#print("case line 1 cursor at begininng of line - dont move selection back in beginning")
+					view.replace(edit, ThisRegionFullline, ''.join(ListLinesStrContentNew))
 					view.show(ThisRegion.begin())
 					view.sel().clear()
-					view.sel().add(sublime.Region(ThisRegion.begin(), ThisRegion.end()-NumLines))
+					view.sel().add(sublime.Region(ThisRegion.begin(), ThisRegion.end()-NumLinesReplaced))
+				elif(view.substr(ThisRegionFullline.begin()) != chr(9)):
+					#print("case line 1 contains no tab at beginning - dont move selection back in beginning")
+					view.replace(edit, ThisRegionFullline, ''.join(ListLinesStrContentNew))
+					view.show(ThisRegion.begin())
+					view.sel().clear()
+					view.sel().add(sublime.Region(ThisRegion.begin(), ThisRegion.end()-NumLinesReplaced))
 				else:
+					#print("case general case - line 1 move selection back 1 - line last move selection back num of tabs removed")
+					view.replace(edit, ThisRegionFullline, ''.join(ListLinesStrContentNew))
 					view.show(ThisRegion.begin()-1)
 					view.sel().clear()
-					view.sel().add(sublime.Region(ThisRegion.begin()-1, ThisRegion.end()-NumLines))
+					view.sel().add(sublime.Region(ThisRegion.begin()-1, ThisRegion.end()-NumLinesReplaced))
 
 #---------------------------------------------------------------
 class CopyFulllinesCommand(sublime_plugin.TextCommand):
@@ -578,7 +590,7 @@ def KnFullLine(mview, mRegion):
 	PosSelectionEnd = mRegion.end()
 	
 	PosSelectionBegin -= 1
-	while( not( (view.substr(PosSelectionBegin) == chr(10)) or (view.substr(PosSelectionBegin) == chr(13)) ) and (PosSelectionBegin > 0) ):
+	while( not( (view.substr(PosSelectionBegin) == chr(10)) or (view.substr(PosSelectionBegin) == chr(13)) ) and (PosSelectionBegin >=0) ):
 		PosSelectionBegin -= 1
 	PosSelectionBegin += 1
 
