@@ -5,7 +5,7 @@
 
 	//---------------------------------------------------------------
 	{
-		"caption": "KeyboardNavigation",
+		"caption": "KN",
 		"mnemonic": "K",
 		"id": "KeyboardNavigation",
 		"children":
@@ -50,8 +50,8 @@
 		{ "caption": "Swap Line Up", "command": "swap_line_up" },
 		{ "caption": "Swap Line Down", "command": "swap_line_down" },
 		{ "caption": "Duplicate Line", "command": "kn_duplicate_line" },
-		{ "caption": "Blankline Above and Go", "command": "blankline_add", "args": {"forward": false} },
-		{ "caption": "Blankline Below and Go", "command": "blankline_add", "args": {"forward": true} },
+		{ "caption": "Blankline Above", "command": "blankline_add", "args": {"forward": false} },
+		{ "caption": "Blankline Below", "command": "blankline_add", "args": {"forward": true} },
 		
 		{ "caption": "Indent Less (Left)", "command": "kn_indent", "args": {"forward": false} },
 		{ "caption": "Indent More (Right)", "command": "kn_indent", "args": {"forward": true} },
