@@ -1,14 +1,20 @@
 # KeyboardNavigation
-Keyboard movement and selection and deletion to whitespace and custom delimeters. Navigate fast between contiguous boundaries. For SublimeText ST2 ST3.
+Keyboard movement and selection and deletion to beginning of word and custom delimeters. Navigate fast between contiguous boundaries via visual inspection. For SublimeText ST2 ST3.
 
-This is like mode in vim of move word to word of "w" and "b" and "W" and "B".
+You always move to the beginning of places instead of non-deterministic (*beginning of of contiguous boundaries demarcated by whitespace). In the following sample you move to the delineated places. After you are at the beginning you move around from the beginning.
+
+    |sample |text |thisisthebeginning |, |233434343
+
+Therefore you know via visual inspection how many keystrokes to go to where you want to go. (preplanning of keystrokes).
+
+This can be seen as analagous to mode in vim of move word to word of "w" and "b" and "W" and "B". But this expands it to arrow keys and extends it to all functions such as delete and backspace as well.
 
 ## Package Installation
 * Manual method: Download ZIP from github. Extract the files to [Sublime_Data_Dir](http://docs.sublimetext.info/en/latest/basic_concepts.html#the-data-directory)\Packages\KeyboardNavigation
 * Automatic method: Install 'KeyboardNavigation' from [Package Control](http://packagecontrol.io).
 
 ## Key Bindings Explanation
-Sample Keybindings:
+Recommended Keybindings:
 * <kbd>ctrl+left</kbd> move cursor to *beginning of next contiguous boundary demarcated by whitespace
 * <kbd>ctrl+right</kbd> move cursor to *beginning of previous contiguous boundary demarcated by whitespace
 * <kbd>alt+left</kbd> move cursor to *beginning of previous subword boundary delineated by symbols
@@ -27,7 +33,7 @@ Sample Keybindings:
 * <kbd>ctrl+shift+b</kbd> expand selection to brackets (, ), <, >, [, ], {, }
 * <kbd>ctrl+shift+l</kbd> select line with linebreak
 * <kbd>ctrl+alt+shift+l</kbd> select line without linebreak
-* <kbd>ctrl+backspace</kbd> delete(backspace) to previous contiguous boundary demarcated by whitespace
+* <kbd>ctrl+backspace</kbd> delete(backspace) to *beginning of previous contiguous boundary demarcated by whitespace
 * <kbd>ctrl+delete</kbd> delete to next contiguous boundary demarcated by whitespace
 * <kbd>alt+backspace</kbd> delete(backspace) to previous subword boundary delineated by symbols
 * <kbd>alt+delete</kbd> delete to next subword boundary delineated by symbols
@@ -40,15 +46,15 @@ Sample Keybindings:
 * <kbd>ctrl+alt+down</kbd> swap line down with up (native)
 * <kbd>ctrl+alt+up</kbd> swap line up with down (native)
 * <kbd>ctrl+d</kbd> duplicate line above (instead of below like innate one)
-* <kbd>ctrl+alt+left</kbd> blank line above and be there
-* <kbd>ctrl+alt+right</kbd> blank line below and be there
+* <kbd>ctrl+alt+left</kbd> blank line above
+* <kbd>ctrl+alt+right</kbd> blank line below
 * <kbd>ctrl+alt+-</kbd> indent less (to the left)
 * <kbd>ctrl+alt+=</kbd> indent more (to the right) (even works with blank line which the native one does not)
 
 ## Key Bindings Configuration
 Since these are redefining / replacing your very basic navigational keys, the package does not automatically overwrite your existing key bindings. You must choose to add the keybindings yourself specific to your OS.
 
-For Windows, you can use the recommended sample keybindings by adding the following lines to [Sublime_Data_Dir](http://docs.sublimetext.info/en/latest/basic_concepts.html#the-data-directory)\Packages\User\Default (Windows).sublime-keymap
+For Windows, you can use the recommended keybindings by adding the following lines to [Sublime_Data_Dir](http://docs.sublimetext.info/en/latest/basic_concepts.html#the-data-directory)\Packages\User\Default (Windows).sublime-keymap
 ```
 { "keys": ["ctrl+left"], "command": "move_to_beg_of_contig_boundary", "args": {"forward": false} },
 { "keys": ["ctrl+right"], "command": "move_to_beg_of_contig_boundary", "args": {"forward": true} },
