@@ -32,7 +32,7 @@ Recommended Keybindings:
 * <kbd>ctrl+shift+q</kbd> expand selection to quotes ", '
 * <kbd>ctrl+shift+b</kbd> expand selection to brackets (, ), <, >, [, ], {, }
 * <kbd>ctrl+shift+l</kbd> select line with linebreak
-* <kbd>ctrl+alt+shift+l</kbd> select line without linebreak
+* <kbd>ctrl+alt+shift+l</kbd> select line without linebreak and prepending tab
 * <kbd>ctrl+backspace</kbd> delete(backspace) to *beginning of previous contiguous boundary demarcated by whitespace
 * <kbd>ctrl+delete</kbd> delete to next contiguous boundary demarcated by whitespace
 * <kbd>alt+backspace</kbd> delete(backspace) to previous subword boundary delineated by symbols

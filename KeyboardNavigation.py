@@ -581,10 +581,14 @@ class SelectLineWoLinebreakCommand(sublime_plugin.TextCommand):
 	def run(self, edit):
 		view = self.view
 		for ThisRegion in view.sel():
-			ThisRegionToDelete = view.line(ThisRegion)
-			# view.sel().clear()
-			view.sel().add(view.line(ThisRegion))
-			# self.view.erase(edit, ThisRegionToDelete)
+			atchar = 0
+			charsinline = view.line(ThisRegion).end() - view.line(ThisRegion).begin()
+			StrThisLine = view.substr(view.line(ThisRegion))
+			while( (StrThisLine[atchar] == chr(9)) and (atchar < charsinline) ):
+				atchar += 1
+			beginpos = view.line(ThisRegion).begin() + atchar
+			view.sel().clear()
+			view.sel().add(sublime.Region(beginpos, view.line(ThisRegion).end()))
 
 #---------------------------------------------------------------
 #https://forum.sublimetext.com/t/bug-full-line-api-returns-another-next-line-with-it-also-if-region-given-to-it-ends-in-a-new-newline-also/44140/7
